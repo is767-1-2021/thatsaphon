@@ -11,18 +11,26 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: "Nat's Home Page"),
+          primarySwatch: Colors.blue,
+          primaryColor: Colors.blueGrey,
+          accentColor: Colors.red,
+          textTheme: TextTheme(bodyText2: TextStyle(color: Colors.purple))),
+
+      // home: MyHomePage(title: "Nat's Home Page"),
+      initialRoute: '/fourth',
+      routes: <String, WidgetBuilder>{
+        '/first': (c) => FirstPage(),
+        '/second': (c) => SecondPage(),
+        '/third': (c) => ThirdPage(),
+        '/fourth': (c) => FourthPage(),
+        '/about': (BuildContext context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('About Route'),
+            ),
+          );
+        },
+      },
     );
   }
 }
@@ -117,7 +125,14 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            cat,
+            Container(
+              margin: EdgeInsets.only(left: 100.0, right: 100.0, bottom: 20),
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  color: Colors.amber.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: cat,
+            ),
             Text(
               'You have pushed the button this many times:',
             ),
@@ -160,6 +175,155 @@ class SubmitButton extends StatelessWidget {
       onPressed: () {
         print('Pressing');
       },
+    );
+  }
+}
+
+class FirstPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Page'),
+        actions: [
+          IconButton(onPressed: () => {}, icon: Icon(Icons.arrow_back)),
+          IconButton(onPressed: () => {}, icon: Icon(Icons.account_tree))
+        ],
+      ),
+      body: Center(
+        child: Text('test'),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Page'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.build_sharp),
+        onPressed: () {},
+      ),
+      body: Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text('test'),
+          Table(
+            children: [
+              TableRow(children: [
+                Container(
+                  child: Center(child: Text('No')),
+                  decoration: BoxDecoration(color: Colors.grey[300]),
+                ),
+                Container(
+                  child: Center(child: Text('Name')),
+                  decoration: BoxDecoration(color: Colors.grey[300]),
+                ),
+              ]),
+              TableRow(children: [
+                Container(
+                  child: Center(child: Text('1')),
+                  decoration: BoxDecoration(color: Colors.grey[300]),
+                ),
+                Container(
+                  child: Center(child: Text('Thatsaphon')),
+                  decoration: BoxDecoration(color: Colors.grey[300]),
+                ),
+              ]),
+              TableRow(children: [
+                Container(
+                  child: Center(child: Text('2')),
+                  decoration: BoxDecoration(color: Colors.grey[300]),
+                ),
+                Container(
+                  child: Center(child: Text('Winai')),
+                  decoration: BoxDecoration(color: Colors.grey[300]),
+                ),
+              ]),
+            ],
+          )
+        ]),
+      ),
+    );
+  }
+}
+
+class ThirdPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      initialIndex: 1,
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Third Page"),
+          centerTitle: true,
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                icon: Icon(Icons.cloud),
+              ),
+              Tab(
+                icon: Icon(Icons.beach_access_outlined),
+              ),
+              Tab(
+                icon: Icon(Icons.brightness_1_outlined),
+              )
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Center(child: Text('Cloud')),
+            Center(child: Text('Umbrella')),
+            Center(child: Text('Sunny'))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FourthPage extends StatelessWidget {
+  final List<String> entries = <String>[
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M'
+  ];
+  final List<int> colorCodes = <int>[600, 500, 100];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('ListView Example'),
+      ),
+      body: ListView.separated(
+        padding: EdgeInsets.all(8.0),
+        itemCount: entries.length,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 50,
+            color: Colors.amber[colorCodes[index % 3]],
+            child: Center(
+              child: Text('Entry ${entries[index]}'),
+            ),
+          );
+        },
+        separatorBuilder: (context, index) => const Divider(),
+      ),
     );
   }
 }
