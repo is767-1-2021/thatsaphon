@@ -427,7 +427,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 print(int.parse(value));
                 return 'Age must be a number and more than 0';
               }
-              print(int.parse(value));
               return null;
             },
             decoration: InputDecoration(
