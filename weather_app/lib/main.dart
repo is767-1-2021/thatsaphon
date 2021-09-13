@@ -4,7 +4,14 @@ import 'package:weather_app/models/src/app_settings.dart';
 import 'package:weather_app/page/page_container.dart';
 import 'package:weather_app/styles.dart';
 
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+
 void main() {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+    if (kReleaseMode) exit(1);
+  };
   AppSettings settings = AppSettings();
   WidgetsFlutterBinding.ensureInitialized();
   // Don't allow landscape mode
