@@ -90,9 +90,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 // ถ้า validate ผ่าน จะเข้าเงื่อนไขนี้
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                          'Hooray!! $firstName $lastName is $age years old')));
+                  // ScaffoldMessenger.of(context)
+                  //     .showSnackBar(SnackBar(content: Text(response)));
+                  var response =
+                      'Hooray!! $firstName $lastName is $age years old';
+                  Navigator.pop(context, response);
                 }
               },
               child: Text('Validate')),

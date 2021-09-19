@@ -4,6 +4,7 @@ import 'pages/fifth_page.dart';
 import 'pages/first_page.dart';
 import 'pages/fourth_page.dart';
 import 'pages/second_page.dart';
+import 'pages/seventh_page.dart';
 import 'pages/sixth_page.dart';
 import 'pages/third_page.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/4': (c) => FourthPage(),
         '/5': (c) => FifthPage(),
         '/6': (c) => SixthPage(),
+        '/7': (c) => SeventhPage(),
         '/about': (BuildContext context) {
           return Scaffold(
             appBar: AppBar(
