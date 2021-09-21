@@ -1,6 +1,8 @@
+import 'package:first_app/models/first_form_model.dart';
 import 'package:first_app/pages/second_page.dart';
 import 'package:first_app/pages/third_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FirstPage extends StatefulWidget {
   @override
@@ -39,12 +41,15 @@ class _FirstPageState extends State<FirstPage> {
           children: [
             Padding(
               padding: EdgeInsets.all(20),
-              child: Text('$_formData'),
+              child: Consumer<FirstFormModel>(builder: (context, form, child) {
+                return Text(
+                    '${form.firstName} ${form.lastName} is ${form.age} years old');
+              }),
             ),
             ElevatedButton(
               onPressed: () async {
                 var response = await Navigator.pushNamed(context, '/6');
-                if (response != null && !response.toString().isEmpty) {
+                if (response != null && response.toString().isNotEmpty) {
                   setState(() {
                     _formData = response.toString();
                   });
