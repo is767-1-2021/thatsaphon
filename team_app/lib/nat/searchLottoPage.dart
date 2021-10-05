@@ -66,7 +66,6 @@ class _SearchLottoPageState extends State<SearchLottoPage> {
                     "เลขท้าย 2 ตัว",
                     "เลขท้าย 3 ตัว",
                     "เลขหน้า 2 ตัว",
-                    "เลขหน้า 3 ตัว",
                     "รางวัลที่ 1",
                     "แสดงทั้งหมด"
                   ]

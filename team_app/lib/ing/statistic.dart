@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:team_app/main.dart';
 
 class Statistic extends StatelessWidget {
   @override
@@ -23,6 +24,7 @@ class Statistic extends StatelessWidget {
         fit: BoxFit.cover,
         alignment: Alignment.center,
       ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 }

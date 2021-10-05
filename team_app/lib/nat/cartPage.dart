@@ -47,10 +47,10 @@ class _CartPageState extends State<CartPage> {
         title: Text("รถเข็น"),
       ),
       body: Container(
-        child: Column(
-          children: List.generate(
-            cart.cartItems.length + 1,
-            (index) => index < cart.cartItems.length
+        child: ListView.builder(
+          itemCount: cart.cartItems.length + 1,
+          itemBuilder: (context, index) {
+            return index < cart.cartItems.length
                 ? Container(
                     height: 80,
                     // margin: EdgeInsets.symmetric(horizontal: 20),
@@ -159,8 +159,8 @@ class _CartPageState extends State<CartPage> {
                         ),
                       ],
                     ),
-                  ),
-          ),
+                  );
+          },
         ),
       ),
       bottomNavigationBar: BottomBar(),

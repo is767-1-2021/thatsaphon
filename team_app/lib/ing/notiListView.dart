@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_app/main.dart';
 
 class Item {
   String noti;
@@ -32,27 +33,29 @@ class _ListviewtestState extends State<Listviewtest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(
-            'การแจ้งเตือน',
-            style: TextStyle(fontSize: 28),
-          ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          'การแจ้งเตือน',
+          style: TextStyle(fontSize: 28),
         ),
-        body: ListView.builder(
-          itemCount: _item.length,
-          itemBuilder: (BuildContext context, int index) {
-            Item item = _item[index];
+      ),
+      body: ListView.builder(
+        itemCount: _item.length,
+        itemBuilder: (BuildContext context, int index) {
+          Item item = _item[index];
 
-            return ListTile(
-              title: Text(
-                item.noti,
-              ),
-              subtitle: Text(item.update),
-              leading: item.icon,
-              tileColor: Colors.deepPurple[50],
-            );
-          },
-        ));
+          return ListTile(
+            title: Text(
+              item.noti,
+            ),
+            subtitle: Text(item.update),
+            leading: item.icon,
+            tileColor: Colors.deepPurple[50],
+          );
+        },
+      ),
+      bottomNavigationBar: BottomBar(),
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_app/ice/component/screen/login/login.dart';
 import 'package:team_app/main.dart';
 import 'package:team_app/models/usernameForm.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class _AccountState extends State<Account> {
             ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(1000.0)),
                 child: Image.asset(
-                  'assets/Alif.jpg',
+                  'assets/alif.jpg',
                 )),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
@@ -183,6 +184,20 @@ class _AccountState extends State<Account> {
                 ),
                 leading: Icon(
                   Icons.place,
+                )),
+            ListTile(
+                onTap: () {
+                  Navigator.popUntil(context, ModalRoute.withName('/login'));
+                },
+                tileColor: Colors.purple[50],
+                title: Text(
+                  'ออกจากระบบ',
+                  style: TextStyle(
+                    fontSize: 24.0,
+                  ),
+                ),
+                leading: Icon(
+                  Icons.logout,
                 ))
           ]),
         )

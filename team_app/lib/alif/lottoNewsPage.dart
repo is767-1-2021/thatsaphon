@@ -7,12 +7,11 @@ class LottoNewsPage extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.purple[50],
         appBar: AppBar(
-          title: Center(
-              child: Text(
+          title: Text(
             'ข่าวสารเลขเด็ด',
-            style: TextStyle(color: Colors.purple[500], fontSize: 24),
-          )),
-          backgroundColor: Colors.purple[50],
+            // style: TextStyle(color: Colors.purple[500], fontSize: 24),
+          ),
+          // backgroundColor: Colors.purple[50],
         ),
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,

@@ -45,115 +45,82 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
         title: Text('ยืนยันการชำระเงิน'),
       ),
       body: Container(
-        child: Column(
-          children: List.generate(
-            cart.cartItems.length + 1,
-            (index) => index < cart.cartItems.length
-                ? Container(
-                    height: 80,
-                    // margin: EdgeInsets.symmetric(horizontal: 20),
-                    // padding: EdgeInsets.symmetric(vertical: 5),
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Colors.purple),
-                      color: Colors.purple[bgColor[index % 2]],
-                      // borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: ListView.builder(
+            itemCount: cart.cartItems.length + 1,
+            itemBuilder: (context, index) {
+              return index < cart.cartItems.length
+                  ? Container(
+                      height: 80,
+                      // margin: EdgeInsets.symmetric(horizontal: 20),
+                      // padding: EdgeInsets.symmetric(vertical: 5),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.purple),
+                        color: Colors.purple[bgColor[index % 2]],
+                        // borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              "${cart.cartItems[index].number}",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "จำนวน",
+                                  style: TextStyle(color: Colors.grey[800]),
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(2),
+                                      // decoration:
+                                      //     BoxDecoration(border: Border.all()),
+                                      child: Text(
+                                          "${cart.cartItems[index].quantity}",
+                                          style: TextStyle(fontSize: 18)),
+                                    ),
+                                  ],
+                                ),
+                                // Text(
+                                //   "จำนวนคงเหลือ ${remainingQuantity[index]}",
+                                //   style: TextStyle(color: Colors.red),
+                                // ),
+                              ],
+                            )
+                          ]),
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(top: 5),
+                      height: 80,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.orange,
+                        ),
+                        color: Colors.orange[100],
+                        // borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            "${cart.cartItems[index].number}",
-                            style: TextStyle(fontSize: 18),
-                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "จำนวนในตะกร้า",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                              Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (addToCartNumbers[index] != 0) {
-                                        //   addToCartNumbers[index]--;
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Icon(
-                                        Icons.arrow_back_ios_rounded,
-                                        size: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(2),
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    child: Text(
-                                        "${cart.cartItems[index].quantity}",
-                                        style: TextStyle(fontSize: 18)),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      // if (addToCartNumbers[index] <
-                                      //     items.searchedInventories[index]
-                                      //         .quantity) {
-                                      //   setState(() {
-                                      //     addToCartNumbers[index]++;
-                                      //   });
-                                      // }
-                                    },
-                                    child: Container(
-                                      child: Icon(
-                                        Icons.arrow_forward_ios_rounded,
-                                        size: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                "จำนวนคงเหลือ ${remainingQuantity[index]}",
-                                style: TextStyle(color: Colors.red),
-                              ),
+                              Text("รวม $totalQuantity ใบ"),
+                              Text("รวม ${totalQuantity * 80} บาท"),
                             ],
-                          )
-                        ]),
-                  )
-                : Container(
-                    margin: EdgeInsets.only(top: 5),
-                    height: 80,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.orange,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Text("ยืนยัน"),
+                          ),
+                        ],
                       ),
-                      color: Colors.orange[100],
-                      // borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("รวม $totalQuantity ใบ"),
-                            Text("รวม ${totalQuantity * 80} บาท"),
-                          ],
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text("ยืนยัน"),
-                        ),
-                      ],
-                    ),
-                  ),
-          ),
-        ),
+                    );
+            }),
       ),
       bottomNavigationBar: BottomBar(),
     );
