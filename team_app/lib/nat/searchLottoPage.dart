@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:team_app/main.dart';
 import 'package:team_app/models/inventories.dart';
 import 'package:provider/provider.dart';
 
-import '../main.dart';
 import 'searchedNumberPage.dart';
 
 class SearchLottoPage extends StatefulWidget {
@@ -14,28 +14,25 @@ class SearchLottoPage extends StatefulWidget {
 class _SearchLottoPageState extends State<SearchLottoPage> {
   final _formKey = GlobalKey<FormState>();
   final items = ['item1', 'item2'];
-  final List<Inventory> inventories = [
-    Inventory("949695", 5),
-    Inventory("086165", 3),
-    Inventory("236331", 8),
-    Inventory("236011", 7),
-    Inventory("365343", 6),
-    Inventory("805238", 2),
-    Inventory("320015", 9),
-    Inventory("920521", 7),
-    Inventory("243595", 5),
-    Inventory("056678", 4),
-    Inventory("193178", 6),
-  ];
-  String? searchBox;
-  String? searchType = "เลขท้าย 2 ตัว";
+  String searchBox = "";
+  String searchType = "เลขท้าย 2 ตัว";
   List<Inventory> searchedItems = [];
 
   @override
   Widget build(BuildContext context) {
+    final List<Inventory> inventories = context.read<Inventories>().inventories;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('ค้นหาเลข'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.shopping_cart,
+            ),
+            onPressed: () => Navigator.pushNamed(context, '/cart'),
+          ),
+        ],
       ),
       body: Form(
         key: _formKey,
@@ -70,7 +67,8 @@ class _SearchLottoPageState extends State<SearchLottoPage> {
                     "เลขท้าย 3 ตัว",
                     "เลขหน้า 2 ตัว",
                     "เลขหน้า 3 ตัว",
-                    "ทั้งชุด"
+                    "รางวัลที่ 1",
+                    "แสดงทั้งหมด"
                   ]
                       .map((value) => DropdownMenuItem(
                             child: Text(value),
@@ -78,7 +76,7 @@ class _SearchLottoPageState extends State<SearchLottoPage> {
                           ))
                       .toList(),
                   onChanged: (value) =>
-                      setState(() => this.searchType = value as String?),
+                      setState(() => this.searchType = (value as String?)!),
                 ),
               ),
             ),
@@ -87,17 +85,20 @@ class _SearchLottoPageState extends State<SearchLottoPage> {
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               child: TextFormField(
                 validator: (value) {
-                  if (searchType == "เลขหน้า 2 ตัว" &&
-                      searchType == "เลขท้าย 2 ตัว" &&
+                  if (searchType == "แสดงทั้งหมด") {
+                    return null;
+                  }
+                  if ((searchType == "เลขหน้า 2 ตัว" ||
+                          searchType == "เลขท้าย 2 ตัว") &&
                       value!.length != 2) {
                     return "ต้องใส่ให้ครบ 2 หลัก";
                   }
-                  if (searchType == "เลขหน้า 3 ตัว" &&
-                      searchType == "เลขท้าย 3 ตัว" &&
+                  if ((searchType == "เลขหน้า 3 ตัว" ||
+                          searchType == "เลขท้าย 3 ตัว") &&
                       value!.length != 3) {
                     return "ต้องใส่ให้ครบ 3 หลัก";
                   }
-                  if (searchType == "ทั้งชุด" && value!.length != 6) {
+                  if (searchType == "รางวัลที่ 1" && value!.length != 6) {
                     return "ต้องใส่ให้ครบ 6 หลัก";
                   }
 
@@ -141,7 +142,7 @@ class _SearchLottoPageState extends State<SearchLottoPage> {
                   icon: Icon(Icons.search),
                 ),
                 onSaved: (value) {
-                  searchBox = value;
+                  searchBox = value!;
                 },
               ),
             ),
@@ -168,16 +169,20 @@ class _SearchLottoPageState extends State<SearchLottoPage> {
                       searchedItems.addAll(inventories.where((inventory) =>
                           inventory.number.substring(0, 3) == searchBox));
                     }
-                    if (searchType == "ทั้งชุด") {
+                    if (searchType == "รางวัลที่ 1") {
                       searchedItems.addAll(inventories.where((inventory) =>
                           inventory.number.substring(0, 6) == searchBox));
+                    }
+                    if (searchType == "แสดงทั้งหมด") {
+                      searchedItems.addAll(inventories);
                     }
                     context.read<Inventories>().searchedInventories =
                         searchedItems;
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SearchedNumberPage()));
+                            builder: (context) =>
+                                SearchedNumberPage(searchType, searchBox)));
                   }
                 },
               ),

@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('หน้าหลัก'),
         backgroundColor: Colors.deepPurple[200],
         actions: <Widget>[
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(
               Icons.shopping_cart,
             ),
-            onPressed: () => Navigator(),
+            onPressed: () => Navigator.pushNamed(context, '/cart'),
           ),
         ],
       ),

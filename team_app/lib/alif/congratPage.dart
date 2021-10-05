@@ -43,7 +43,7 @@ class CongratPage extends StatelessWidget {
         child: Container(
           height: 300.0,
           margin: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
-          padding: EdgeInsets.all(50.0),
+          padding: EdgeInsets.all(25.0),
           decoration: BoxDecoration(
             color: Colors.purple[50],
             borderRadius: BorderRadius.circular(10.0),
@@ -56,7 +56,7 @@ class CongratPage extends StatelessWidget {
                   return Center(
                     child: Text(
                       'ขอแสดงความยินดีด้วย หมายเลข ${form.lottoNo} ของคุณถูกรางวัล ',
-                      style: TextStyle(fontSize: 40, color: Colors.grey),
+                      style: TextStyle(fontSize: 28, color: Colors.grey),
                     ),
                   );
                 },

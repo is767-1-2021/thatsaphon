@@ -17,10 +17,11 @@ class _AccountState extends State<Account> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'บัญชีของฉัน',
           style: TextStyle(
-            fontSize: 34.0,
+            fontSize: 26.0,
           ),
         ),
         actions: [
@@ -48,7 +49,7 @@ class _AccountState extends State<Account> {
                     return Text(
                       '${form.Username}',
                       style: TextStyle(
-                          fontSize: 45.0, fontWeight: (FontWeight.w300)),
+                          fontSize: 30.0, fontWeight: (FontWeight.w300)),
                     );
                   })),
               Container(
@@ -56,7 +57,7 @@ class _AccountState extends State<Account> {
                   child: ElevatedButton(
                     child: const Text(
                       'แก้ไข username',
-                      style: TextStyle(fontSize: 25.0),
+                      style: TextStyle(fontSize: 18.0),
                     ),
                     onPressed: () {
                       showDialog(
@@ -71,7 +72,7 @@ class _AccountState extends State<Account> {
                                     key: _formKey,
                                     child: TextFormField(
                                       style: TextStyle(
-                                        fontSize: 35.0,
+                                        fontSize: 18.0,
                                       ),
                                       decoration: InputDecoration(
                                         border: UnderlineInputBorder(),
@@ -111,7 +112,7 @@ class _AccountState extends State<Account> {
                                       child: Text(
                                         'บันทึก',
                                         style: TextStyle(
-                                          fontSize: 25.0,
+                                          fontSize: 18.0,
                                         ),
                                       ),
                                     ),
@@ -128,11 +129,14 @@ class _AccountState extends State<Account> {
         Expanded(
           child: ListView(shrinkWrap: true, children: [
             ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
               tileColor: Colors.purple[50],
               title: Text(
                 'แก้ไขข้อมูลส่วนตัว',
                 style: TextStyle(
-                  fontSize: 38.0,
+                  fontSize: 24.0,
                 ),
               ),
               leading: Icon(Icons.mode_edit),
@@ -142,7 +146,7 @@ class _AccountState extends State<Account> {
               title: Text(
                 'กระเป๋าเงิน',
                 style: TextStyle(
-                  fontSize: 38.0,
+                  fontSize: 24.0,
                 ),
               ),
               leading: Icon(Icons.local_atm),
@@ -152,7 +156,7 @@ class _AccountState extends State<Account> {
                 title: Text(
                   'ประวัติการซื้อ',
                   style: TextStyle(
-                    fontSize: 38.0,
+                    fontSize: 24.0,
                   ),
                 ),
                 leading: Icon(Icons.history),
@@ -164,7 +168,7 @@ class _AccountState extends State<Account> {
               title: Text(
                 'ตั้งค่า',
                 style: TextStyle(
-                  fontSize: 38.0,
+                  fontSize: 24.0,
                 ),
               ),
               leading: Icon(Icons.settings),
@@ -174,7 +178,7 @@ class _AccountState extends State<Account> {
                 title: Text(
                   'ช่องทางการติดต่อ',
                   style: TextStyle(
-                    fontSize: 38.0,
+                    fontSize: 24.0,
                   ),
                 ),
                 leading: Icon(

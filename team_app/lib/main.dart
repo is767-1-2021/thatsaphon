@@ -18,9 +18,11 @@ import 'package:team_app/nat/searchLottoPage.dart';
 import 'package:provider/provider.dart';
 
 import 'ing/noti.dart';
+import 'ing/notiListView.dart';
 import 'kaew/account.dart';
 import 'kaew/history.dart';
 import 'models/bottomBarIndex.dart';
+import 'nat/cartPage.dart';
 
 void main() {
   runApp(
@@ -58,7 +60,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             color: Colors.deepPurple[200],
           ),
-          fontFamily: 'JasmineUPC',
+          fontFamily: 'Prompt',
           bottomAppBarColor: Colors.purple[200]),
       initialRoute: '/login',
       routes: <String, WidgetBuilder>{
@@ -71,12 +73,13 @@ class MyApp extends StatelessWidget {
         '/check': (context) => CheckPage(),
         '/congrat': (context) => CongratPage(),
         '/sorry': (context) => SorryPage(),
-        '/noti': (context) => Notifications(),
+        '/noti': (context) => Listviewtest(),
         '/input': (context) => Notiinput(),
         '/search': (context) => SearchLottoPage(),
         '/register': (context) => RegisterScreen(),
         '/login': (context) => LoginScreen(),
         '/profile': (context) => ProfileScreen(),
+        '/cart': (context) => CartPage(),
       },
     );
   }

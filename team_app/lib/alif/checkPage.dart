@@ -11,7 +11,8 @@ class CheckPage extends StatefulWidget {
 
 class _CheckPageState extends State<CheckPage> {
   final _formKey = GlobalKey<FormState>();
-  String? _lottoNo;
+  String _lottoNo = "";
+  String _dialog = "";
 
   List<LottoList> NoList = [
     LottoList('รางวัลที่ 1', '145621'),
@@ -28,6 +29,7 @@ class _CheckPageState extends State<CheckPage> {
     return Scaffold(
         backgroundColor: Colors.purple[50],
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Center(
               child: Text(
             'ตรวจหวยจ้า',
@@ -59,26 +61,27 @@ class _CheckPageState extends State<CheckPage> {
                       return 'โปรดใส่เลขสลากของท่าน';
                     } else if (int.parse(value) > 999999) {
                       return 'หมายเลขต้องมีความยาว 6 ตัว';
-                    } else if (value == '145621') {
-                      Navigator.pushNamed(
-                        context,
-                        '/congrat',
-                      );
-                    } else if (value.substring(0, 3) == '118' ||
-                        value.substring(0, 3) == '309') {
-                      Navigator.pushNamed(context, '/congrat');
-                    } else if (value.substring(3, 6) == '143' ||
-                        value.substring(3, 6) == '716') {
-                      Navigator.pushNamed(context, '/congrat');
-                    } else if (value.substring(4, 6) == '12') {
-                      Navigator.pushNamed(context, '/congrat');
-                    } else if (value != '145622') {
-                      Navigator.pushNamed(context, '/sorry');
                     }
+                    // if (value == '145621') {
+                    //   Navigator.pushNamed(
+                    //     context,
+                    //     '/congrat',
+                    //   );
+                    // } else if (value.substring(0, 3) == '118' ||
+                    //     value.substring(0, 3) == '309') {
+                    //   Navigator.pushNamed(context, '/congrat');
+                    // } else if (value.substring(3, 6) == '143' ||
+                    //     value.substring(3, 6) == '716') {
+                    //   Navigator.pushNamed(context, '/congrat');
+                    // } else if (value.substring(4, 6) == '12') {
+                    //   Navigator.pushNamed(context, '/congrat');
+                    // } else if (value != '145622') {
+                    //   Navigator.pushNamed(context, '/sorry');
+                    // }
                     return null;
                   },
                   onSaved: (value) {
-                    _lottoNo = value;
+                    _lottoNo = value!;
                   },
                   initialValue: context.read<FirstFormModel>().lottoNo,
                 ),
@@ -89,6 +92,54 @@ class _CheckPageState extends State<CheckPage> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
+
+                      if (_lottoNo == '145621') {
+                        _dialog = "ยินดีด้วยคุณถูกรางวัลที่ 1";
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   '/congrat',
+                        // );
+                      } else if (_lottoNo.substring(0, 3) == '118' ||
+                          _lottoNo.substring(0, 3) == '309') {
+                        _dialog = "ยินดีด้วยคุณถูกเลขหน้า 3 ตัว";
+                        // Navigator.pushNamed(context, '/congrat');
+                      } else if (_lottoNo.substring(3, 6) == '143' ||
+                          _lottoNo.substring(3, 6) == '716') {
+                        _dialog = "ยินดีด้วยคุณถูกเลขท้าย 3 ตัว";
+                        // Navigator.pushNamed(context, '/congrat');
+                      } else if (_lottoNo.substring(4, 6) == '12') {
+                        _dialog = "ยินดีด้วยคุณถูกเลขท้าย 2 ตัว";
+                        // Navigator.pushNamed(context, '/congrat');
+                      } else if (_lottoNo != '145622') {
+                        _dialog = "คุณไม่ถูกรางวัล";
+                        // Navigator.pushNamed(context, '/sorry');
+                      }
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(
+                              'ผลการตรวจรางวัล',
+                              style: TextStyle(fontSize: 25.0),
+                            ),
+                            content: Container(
+                              child: Text(
+                                '$_dialog',
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
+                            actions: [
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                  },
+                                  icon: Icon(Icons.clear_outlined))
+                            ],
+                          );
+                        },
+                      );
 
                       context.read<FirstFormModel>().lottoNo = _lottoNo;
                     }

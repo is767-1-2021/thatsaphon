@@ -42,7 +42,7 @@ class _HistoryState extends State<History> {
         tileColor: Colors.deepPurple[100],
         title: Text(
           tile.headerValue,
-          style: TextStyle(fontSize: 25.0),
+          style: TextStyle(fontSize: 20.0),
         ),
       );
 
@@ -51,11 +51,11 @@ class _HistoryState extends State<History> {
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Text(
           tile2.lotto,
-          style: TextStyle(fontSize: 25.0),
+          style: TextStyle(fontSize: 18.0),
         ),
         Text(
           tile2.number,
-          style: TextStyle(fontSize: 25.0),
+          style: TextStyle(fontSize: 18.0),
         )
       ]),
       tileColor: Colors.purple[50],
@@ -201,7 +201,7 @@ class _HistoryState extends State<History> {
       appBar: AppBar(
         title: Text(
           'ประวัติการซื้อ',
-          style: TextStyle(fontSize: 34.0),
+          style: TextStyle(fontSize: 28.0),
         ),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.history)),
