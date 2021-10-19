@@ -1,4 +1,5 @@
 import 'package:first_app/models/first_form_model.dart';
+import 'package:first_app/pages/eigth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/5': (c) => FifthPage(),
         '/6': (c) => SixthPage(),
         '/7': (c) => SeventhPage(),
+        '/8': (c) => EigthPage(),
         '/about': (BuildContext context) {
           return Scaffold(
             appBar: AppBar(
