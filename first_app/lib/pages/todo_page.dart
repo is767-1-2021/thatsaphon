@@ -37,12 +37,15 @@ class _TodoPageState extends State<TodoPage> {
           itemCount: todos.isEmpty ? 1 : todos.length,
           itemBuilder: (context, index) {
             if (todos.isEmpty) return Text("Tap button to fetch Todos");
-
             return CheckboxListTile(
-              value: todos[index].completed,
-              onChanged: (bool) {
+              value: todos[index].completed == null
+                  ? false
+                  : todos[index].completed,
+              onChanged: (bool) async {
+                // widget.controller.onSync.listen(
+                //     (bool synState) => setState(() => isLoading = synState));
                 setState(() {
-                  todos[index].completed = !todos[index].completed;
+                  widget.controller.updateTodos(todos[index].id);
                 });
               },
               title: Text(todos[index].title),
