@@ -44,8 +44,9 @@ class _TodoPageState extends State<TodoPage> {
               onChanged: (bool) async {
                 // widget.controller.onSync.listen(
                 //     (bool synState) => setState(() => isLoading = synState));
-                setState(() {
-                  widget.controller.updateTodos(todos[index].id);
+                setState(() async {
+                  await widget.controller.updateTodos(todos[index].id);
+                  _getTodos();
                 });
               },
               title: Text(todos[index].title),

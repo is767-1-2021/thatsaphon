@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 
 abstract class Services {
   Future<List<Todo>> getTodos();
-  void updateTodo(int userId);
+  Future<List<Todo>> updateTodo(int userId);
 }
 
 class FirebaseService extends Services {
@@ -19,31 +19,24 @@ class FirebaseService extends Services {
     return todos.todos;
   }
 
-  void updateTodo(int id) async {
+  Future<List<Todo>> updateTodo(int id) async {
     QuerySnapshot querySnap = await FirebaseFirestore.instance
         .collection('todos')
         .where('id', isEqualTo: id)
         .get();
 
-    AllTodos todos = AllTodos.fromSnapshot(querySnap);
-    print(todos.todos[0].id);
+    AllTodos todo = AllTodos.fromSnapshot(querySnap);
 
     QueryDocumentSnapshot doc = querySnap.docs[0];
     DocumentReference docRef = doc.reference;
 
-    print(querySnap.docs[0]);
-    print(docRef);
+    await docRef.update({'completed': !todo.todos[0].completed});
 
-    await docRef.update({'completed': !todos.todos[0].completed});
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection('todos').get();
 
-    // CollectionReference todos = FirebaseFirestore.instance.collection('todos');
-    // todos.doc(docRef).
-
-    // .where("userId", isEqualTo: 1)
-    // CollectionReference todos = FirebaseFirestore.instance.doc('todos/$userId');
-
-    // AllTodos todos = AllTodos.fromSnapshot(querySnap);
-    // print(todos.todos.length);
+    AllTodos todos = AllTodos.fromSnapshot(snapshot);
+    return todos.todos;
   }
 }
 
