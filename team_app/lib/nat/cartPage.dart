@@ -39,7 +39,7 @@ class _CartPageState extends State<CartPage> {
     );
     int totalQuantity = 0;
     cart.cartItems.forEach((element) {
-      totalQuantity = totalQuantity + element.quantity;
+      totalQuantity = totalQuantity + element.qtyLotto;
     });
 
     return Scaffold(
@@ -64,7 +64,7 @@ class _CartPageState extends State<CartPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            "${cart.cartItems[index].number}",
+                            "${cart.cartItems[index].lottoNum}",
                             style: TextStyle(fontSize: 18),
                           ),
                           Column(
@@ -96,7 +96,7 @@ class _CartPageState extends State<CartPage> {
                                     decoration:
                                         BoxDecoration(border: Border.all()),
                                     child: Text(
-                                        "${cart.cartItems[index].quantity}",
+                                        "${cart.cartItems[index].qtyLotto}",
                                         style: TextStyle(fontSize: 18)),
                                   ),
                                   InkWell(

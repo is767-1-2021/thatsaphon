@@ -1,31 +1,84 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:team_app/alif/lottoList.dart';
+import 'package:team_app/controllers/checkLottoController.dart';
 import 'package:team_app/main.dart';
 import 'package:team_app/models/prize.dart';
 import 'package:provider/provider.dart';
+import 'package:team_app/services/checkLottoService.dart';
 
 class CheckPage extends StatefulWidget {
+  var service = CheckLottoService();
+  var controller;
+  CheckPage() {
+    controller = CheckLottoController(service);
+  }
+
   @override
-  _CheckPageState createState() => _CheckPageState();
+  _CheckPageState createState() => _CheckPageState(this.controller);
 }
 
 class _CheckPageState extends State<CheckPage> {
   final _formKey = GlobalKey<FormState>();
   String _lottoNo = "";
   String _dialog = "";
+  List<LottoPrize> prizes = [];
+  bool isLoading = false;
 
-  List<LottoList> NoList = [
-    LottoList('รางวัลที่ 1', '145621'),
-    LottoList('เลขหน้า 3 ตัว', '118 309'),
-    LottoList('เลขท้าย 3 ตัว', '143 716'),
-    LottoList('เลขท้าย 2 ตัว', '12'),
-    LottoList('รางวัลที่ 2', '123456  123456  123456  123456  123456'),
-    LottoList('รางวัลที่ 3',
-        '123456  123456  123456  123456  123456  123456  123456  123456  123456  123456'),
-  ];
+  CheckLottoController controller;
+
+  _CheckPageState(this.controller);
+
+  @override
+  void initState() {
+    super.initState();
+    _getPrizes();
+    controller.onSync
+        .listen((bool synState) => setState(() => isLoading = synState));
+  }
+
+  var firstPrize = "";
+  String secondPrize = "";
+  String thirdPrize = "";
+  String firstThree = "";
+  String lastThree = "";
+  String lastTwo = "";
+
+  void _getPrizes() async {
+    var newPrizes = await controller.fetchPrizes("1 พฤศจิกายน 2564");
+    newPrizes.forEach((prize) {
+      setState(() {
+        prize.prize == "รางวัลที่ 1"
+            ? firstPrize = prize.lottoNum
+            : prize.prize == "รางวัลที่ 2"
+                ? secondPrize += " " + prize.lottoNum
+                : prize.prize == "รางวัลที่ 3"
+                    ? thirdPrize += " " + prize.lottoNum
+                    : prize.prize == "รางวัลเลขหน้า 3 ตัว"
+                        ? firstThree += " " + prize.lottoNum
+                        : prize.prize == "รางวัลเลขท้าย 2 ตัว"
+                            ? lastTwo += " " + prize.lottoNum
+                            : prize.prize == "รางวัลเลขท้าย 3 ตัว"
+                                ? lastThree += " " + prize.lottoNum
+                                : print("wrong format");
+      });
+    });
+    setState(() {
+      prizes = newPrizes;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<LottoList> NoList = [
+      LottoList('รางวัลที่ 1', firstPrize),
+      LottoList('เลขหน้า 3 ตัว', firstThree),
+      LottoList('เลขท้าย 3 ตัว', lastThree),
+      LottoList('เลขท้าย 2 ตัว', lastTwo),
+      LottoList('รางวัลที่ 2', secondPrize),
+      LottoList('รางวัลที่ 3', thirdPrize),
+    ];
     return Scaffold(
         backgroundColor: Colors.purple[50],
         appBar: AppBar(
@@ -40,7 +93,7 @@ class _CheckPageState extends State<CheckPage> {
         bottomNavigationBar: BottomBar(),
         body: Center(
           child: Column(
-            children: <Widget>[_form(), _list()],
+            children: <Widget>[_form(), _list(NoList)],
           ),
         ));
   }
@@ -93,27 +146,66 @@ class _CheckPageState extends State<CheckPage> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
 
-                      if (_lottoNo == '145621') {
-                        _dialog = "ยินดีด้วยคุณถูกรางวัลที่ 1";
-                        // Navigator.pushNamed(
-                        //   context,
-                        //   '/congrat',
-                        // );
-                      } else if (_lottoNo.substring(0, 3) == '118' ||
-                          _lottoNo.substring(0, 3) == '309') {
-                        _dialog = "ยินดีด้วยคุณถูกเลขหน้า 3 ตัว";
-                        // Navigator.pushNamed(context, '/congrat');
-                      } else if (_lottoNo.substring(3, 6) == '143' ||
-                          _lottoNo.substring(3, 6) == '716') {
-                        _dialog = "ยินดีด้วยคุณถูกเลขท้าย 3 ตัว";
-                        // Navigator.pushNamed(context, '/congrat');
-                      } else if (_lottoNo.substring(4, 6) == '12') {
-                        _dialog = "ยินดีด้วยคุณถูกเลขท้าย 2 ตัว";
-                        // Navigator.pushNamed(context, '/congrat');
-                      } else if (_lottoNo != '145622') {
-                        _dialog = "คุณไม่ถูกรางวัล";
-                        // Navigator.pushNamed(context, '/sorry');
-                      }
+                      _dialog = "คุณไม่ถูกรางวัล";
+                      prizes.forEach((prize) {
+                        if (_lottoNo.length != 6) {
+                          _dialog = "โปรดใส่เลขให้ครบ 6 หลัก";
+                          return;
+                        }
+                        if (prize.prize == "รางวัลที่ 1" &&
+                            _lottoNo == prize.lottoNum) {
+                          _dialog = "ยินดีด้วยคุณถูกรางวัลที่ 1";
+                          return;
+                        }
+
+                        if (prize.prize == "รางวัลที่ 2" &&
+                            _lottoNo == prize.lottoNum) {
+                          _dialog = "\nยินดีด้วยคุณถูกรางวัลที่ 2";
+                          return;
+                        }
+                        if (prize.prize == "รางวัลที่ 3" &&
+                            _lottoNo == prize.lottoNum) {
+                          _dialog = "ยินดีด้วยคุณถูกรางวัลที่ 3";
+                          return;
+                        }
+                        if (prize.prize == "รางวัลเลขท้าย 2 ตัว" &&
+                            _lottoNo.substring(4, 6) == prize.lottoNum) {
+                          _dialog = "\nยินดีด้วยคุณถูกเลขท้าย 2 ตัว";
+                          return;
+                        }
+                        if (prize.prize == "รางวัลเลขท้าย 3 ตัว" &&
+                            _lottoNo.substring(0, 3) == prize.lottoNum) {
+                          _dialog = "ยินดีด้วยคุณถูกเลขท้าย 3 ตัว";
+                          return;
+                        }
+                        if (prize.prize == "รางวัลเลขหน้า 3 ตัว" &&
+                            _lottoNo.substring(0, 3) == prize.lottoNum) {
+                          _dialog = "ยินดีด้วยคุณถูกเลขหน้า 3 ตัว";
+                          return;
+                        }
+                      });
+
+                      // if (_lottoNo == '145621') {
+                      //   _dialog = "ยินดีด้วยคุณถูกรางวัลที่ 1";
+                      //   // Navigator.pushNamed(
+                      //   //   context,
+                      //   //   '/congrat',
+                      //   // );
+                      // } else if (_lottoNo.substring(0, 3) == '118' ||
+                      //     _lottoNo.substring(0, 3) == '309') {
+                      //   _dialog = "ยินดีด้วยคุณถูกเลขหน้า 3 ตัว";
+                      //   // Navigator.pushNamed(context, '/congrat');
+                      // } else if (_lottoNo.substring(3, 6) == '143' ||
+                      //     _lottoNo.substring(3, 6) == '716') {
+                      //   _dialog = "ยินดีด้วยคุณถูกเลขท้าย 3 ตัว";
+                      //   // Navigator.pushNamed(context, '/congrat');
+                      // } else if (_lottoNo.substring(4, 6) == '12') {
+                      //   _dialog = "ยินดีด้วยคุณถูกเลขท้าย 2 ตัว";
+                      //   // Navigator.pushNamed(context, '/congrat');
+                      // } else if (_lottoNo != '145622') {
+                      //   _dialog = "คุณไม่ถูกรางวัล";
+                      //   // Navigator.pushNamed(context, '/sorry');
+                      // }
 
                       showDialog(
                         context: context,
@@ -153,7 +245,7 @@ class _CheckPageState extends State<CheckPage> {
         ),
       );
 
-  _list() => Expanded(
+  _list(List<LottoList> NoList) => Expanded(
         child: Card(
           color: Colors.purple[100],
           margin: EdgeInsets.fromLTRB(20, 30, 20, 10),

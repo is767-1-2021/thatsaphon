@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:team_app/alif/checkPage.dart';
 import 'package:team_app/alif/congratPage.dart';
@@ -23,12 +24,15 @@ import 'kaew/history.dart';
 import 'models/bottomBarIndex.dart';
 import 'nat/cartPage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => Inventories(),
+          create: (context) => Inventories([]),
         ),
         ChangeNotifierProvider(
           create: (context) => NotiformModel(),

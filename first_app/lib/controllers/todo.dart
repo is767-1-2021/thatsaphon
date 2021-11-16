@@ -14,9 +14,9 @@ class TodoController {
 
   TodoController(this.service);
 
-  Future<List<Todo>> fetchTodos() async {
+  Future<List<Todo>> fetchTodos(int id) async {
     onSyncController.add(true);
-    todos = await service.getTodos();
+    todos = await service.getTodos(id);
     onSyncController.add(false);
     return todos;
   }
@@ -24,7 +24,7 @@ class TodoController {
   Future<List<Todo>> updateTodos(int id) async {
     onSyncController.add(true);
     service.updateTodo(id);
-    todos = await service.getTodos();
+    todos = await service.getTodos(id);
     return todos;
   }
 }

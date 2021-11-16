@@ -37,7 +37,7 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
     );
     int totalQuantity = 0;
     cart.cartItems.forEach((element) {
-      totalQuantity = totalQuantity + element.quantity;
+      totalQuantity = totalQuantity + element.qtyLotto;
     });
 
     return Scaffold(
@@ -62,7 +62,7 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              "${cart.cartItems[index].number}",
+                              "${cart.cartItems[index].lottoNum}",
                               style: TextStyle(fontSize: 18),
                             ),
                             Column(
@@ -79,7 +79,7 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
                                       // decoration:
                                       //     BoxDecoration(border: Border.all()),
                                       child: Text(
-                                          "${cart.cartItems[index].quantity}",
+                                          "${cart.cartItems[index].qtyLotto}",
                                           style: TextStyle(fontSize: 18)),
                                     ),
                                   ],

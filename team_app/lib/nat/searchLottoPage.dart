@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:team_app/controllers/inventoryController.dart';
 import 'package:team_app/main.dart';
 import 'package:team_app/models/inventories.dart';
 import 'package:provider/provider.dart';
+import 'package:team_app/services/inventoryService.dart';
 
 import 'searchedNumberPage.dart';
 
@@ -17,15 +19,104 @@ class _SearchLottoPageState extends State<SearchLottoPage> {
   String searchBox = "";
   String searchType = "เลขท้าย 2 ตัว";
   List<Inventory> searchedItems = [];
+  List<Inventory> inventories = [];
+  bool isLoading = false;
+
+  var service = FetchInventoryService();
+  var controller;
+  _SearchLottoPageState() {
+    controller = InventoryController(service);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _fetchInventory();
+    controller.onSync
+        .listen((bool synState) => setState(() => isLoading = synState));
+  }
+
+  void _fetchInventory() async {
+    var newInventories = await controller.fetchAllInventory();
+    print("newInventories");
+    print(newInventories);
+    setState(() {
+      Inventories(newInventories);
+      inventories = newInventories;
+      // context.read()<Inventories>().inventories = newInventories;
+    });
+    print(inventories);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<Inventory> inventories = context.read<Inventories>().inventories;
+    // inventories = context.read<Inventories>().inventories;
+    print("Widget");
+    print(inventories);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('ค้นหาเลข'),
         actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              var _addFormKey = GlobalKey<FormState>();
+              var addLottoNum = "";
+              var addQty = 0;
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('เพิ่มเลข'),
+                    content: Form(
+                      key: _addFormKey,
+                      child: Container(
+                        height: 300,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              children: [
+                                Text("lottoNum"),
+                              ],
+                            ),
+                            TextField(
+                              onChanged: (value) {
+                                addLottoNum = value;
+                              },
+                            ),
+                            Row(
+                              children: [
+                                Text("qty"),
+                              ],
+                            ),
+                            TextField(
+                              onChanged: (value) {
+                                addQty = int.parse(value);
+                              },
+                            ),
+                            MaterialButton(
+                              onPressed: () {
+                                if (addLottoNum.length == 6 && addQty > 0) {
+                                  controller.addInventory(addLottoNum, addQty);
+                                  controller.fetchAllInventory();
+                                }
+                                Navigator.pushNamed(context, '/search');
+                              },
+                              color: Colors.blue,
+                              child: Text("submit"),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.add),
+          ),
           IconButton(
             icon: Icon(
               Icons.shopping_cart,
@@ -154,23 +245,23 @@ class _SearchLottoPageState extends State<SearchLottoPage> {
                     _formKey.currentState!.save();
                     if (searchType == "เลขท้าย 2 ตัว") {
                       searchedItems.addAll(inventories.where((inventory) =>
-                          inventory.number.substring(4, 6) == searchBox));
+                          inventory.lottoNum.substring(4, 6) == searchBox));
                     }
                     if (searchType == "เลขท้าย 3 ตัว") {
                       searchedItems.addAll(inventories.where((inventory) =>
-                          inventory.number.substring(3, 6) == searchBox));
+                          inventory.lottoNum.substring(3, 6) == searchBox));
                     }
                     if (searchType == "เลขหน้า 2 ตัว") {
                       searchedItems.addAll(inventories.where((inventory) =>
-                          inventory.number.substring(0, 2) == searchBox));
+                          inventory.lottoNum.substring(0, 2) == searchBox));
                     }
                     if (searchType == "เลขหน้า 3 ตัว") {
                       searchedItems.addAll(inventories.where((inventory) =>
-                          inventory.number.substring(0, 3) == searchBox));
+                          inventory.lottoNum.substring(0, 3) == searchBox));
                     }
                     if (searchType == "รางวัลที่ 1") {
                       searchedItems.addAll(inventories.where((inventory) =>
-                          inventory.number.substring(0, 6) == searchBox));
+                          inventory.lottoNum.substring(0, 6) == searchBox));
                     }
                     if (searchType == "แสดงทั้งหมด") {
                       searchedItems.addAll(inventories);

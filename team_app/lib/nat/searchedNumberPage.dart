@@ -56,16 +56,20 @@ class _SearchedNumberPageState extends State<SearchedNumberPage> {
                   for (var j = 0;
                       j < context.read<Inventories>().cart.cartItems.length;
                       j++) {
-                    if (context.read<Inventories>().cart.cartItems[j].number ==
+                    if (context
+                            .read<Inventories>()
+                            .cart
+                            .cartItems[j]
+                            .lottoNum ==
                         context
                             .read<Inventories>()
                             .searchedInventories[index]
-                            .number) {
+                            .lottoNum) {
                       return context
                           .read<Inventories>()
                           .cart
                           .cartItems[j]
-                          .quantity;
+                          .qtyLotto;
                     }
                   }
                   return 0;
@@ -88,7 +92,7 @@ class _SearchedNumberPageState extends State<SearchedNumberPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "${items.searchedInventories[index].number}",
+                        "${items.searchedInventories[index].lottoNum}",
                         style: TextStyle(fontSize: 18),
                       ),
                       Column(
@@ -125,7 +129,7 @@ class _SearchedNumberPageState extends State<SearchedNumberPage> {
                                 onTap: () {
                                   if (addToCartNumbers[index] <
                                       items.searchedInventories[index]
-                                          .quantity) {
+                                          .qtyLotto) {
                                     setState(() {
                                       addToCartNumbers[index]++;
                                     });
@@ -141,7 +145,7 @@ class _SearchedNumberPageState extends State<SearchedNumberPage> {
                             ],
                           ),
                           Text(
-                            "จำนวนคงเหลือ ${items.searchedInventories[index].quantity}",
+                            "จำนวนคงเหลือ ${items.searchedInventories[index].qtyLotto}",
                             style: TextStyle(color: Colors.red),
                           ),
                         ],
@@ -157,17 +161,17 @@ class _SearchedNumberPageState extends State<SearchedNumberPage> {
                                         .cartItems
                                         .length;
                                 i++) {
-                              if (items.searchedInventories[index].number ==
+                              if (items.searchedInventories[index].lottoNum ==
                                   context
                                       .read<Inventories>()
                                       .cart
                                       .cartItems[i]
-                                      .number) {
+                                      .lottoNum) {
                                 context
                                     .read<Inventories>()
                                     .cart
                                     .cartItems[i]
-                                    .quantity = addToCartNumbers[index];
+                                    .qtyLotto = addToCartNumbers[index];
                                 setState(() {});
                                 break;
                               }
@@ -181,7 +185,8 @@ class _SearchedNumberPageState extends State<SearchedNumberPage> {
                                           1) {
                                 context.read<Inventories>().cart.cartItems.add(
                                     Inventory(
-                                        items.searchedInventories[index].number,
+                                        items.searchedInventories[index]
+                                            .lottoNum,
                                         addToCartNumbers[i]));
                               }
                             }
@@ -195,7 +200,8 @@ class _SearchedNumberPageState extends State<SearchedNumberPage> {
                               0) {
                             context.read<Inventories>().cart = new Cart(
                                 "test", <Inventory>[
-                              Inventory(items.searchedInventories[index].number,
+                              Inventory(
+                                  items.searchedInventories[index].lottoNum,
                                   addToCartNumbers[index])
                             ]);
                             setState(() {});

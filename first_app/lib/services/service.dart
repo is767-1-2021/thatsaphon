@@ -5,15 +5,17 @@ import 'package:first_app/models/todo.dart';
 import 'package:http/http.dart';
 
 abstract class Services {
-  Future<List<Todo>> getTodos();
+  Future<List<Todo>> getTodos(int id);
   Future<List<Todo>> updateTodo(int userId);
 }
 
 class FirebaseService extends Services {
   @override
-  Future<List<Todo>> getTodos() async {
-    QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('todos').get();
+  Future<List<Todo>> getTodos(int id) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('todos')
+        .where('id', isEqualTo: id)
+        .get();
 
     AllTodos todos = AllTodos.fromSnapshot(snapshot);
     return todos.todos;
