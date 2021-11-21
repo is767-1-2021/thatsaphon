@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:team_app/ice/component/background.dart';
 import 'package:team_app/main.dart';
-// import 'package:team_apps/components/background.dart';
 
+// import 'package:team_apps/components/background.dart';
 class ProfileScreen extends StatelessWidget {
   static String routeName = '/profile';
   @override
   Widget build(BuildContext context) {
-    var size;
     return Scaffold(
       body: Background(
         child: Column(
@@ -19,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage("assets/alif.jpg"),
+                    backgroundImage: AssetImage(""),
                   ),
                 ],
               ),
@@ -52,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(),
-                  labelText: "BirthDay",
+                  labelText: "BirthDate",
                   icon: Icon(Icons.cake),
                 ),
               ),
@@ -107,3 +106,52 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
+// class Users extends StatefulWidget {
+//   final UserData users;
+//   Users(this.users);
+
+//   @override
+//   _UsersState createState() => _UsersState(this.users);
+// }
+
+// class _UsersState extends State<Users> {
+//   final UserData users;
+//   bool isLoading = false;
+//   var service = UserServices();
+//   var controller;
+//   _UsersState(this.users) {
+//     controller = UserController(service);
+//   }
+
+//   @override
+//   void initState() {
+//     super.initState();
+
+//     controller.onSync
+//         .listen((bool synState) => setState(() => isLoading = synState));
+//   }
+
+//   void _getUsers() async {
+//     var newNews = await controller.fectUsers();
+
+//     // setState(() {
+//     //   news = newNews;
+//     // });
+//   }
+
+//   Widget get body => Column(
+//         children: [Text(users.fullname), Text(users.phone)],
+//       );
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('News Detail'),
+//       ),
+//       body: Center(
+//         child: body,
+//       ),
+//     );
+//   }
+// }

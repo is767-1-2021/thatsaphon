@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:team_app/controllers/inventoryController.dart';
 
 import 'package:team_app/main.dart';
 import 'package:team_app/models/inventories.dart';
+import 'package:team_app/services/inventoryService.dart';
 
 class ConfirmPaymentPage extends StatefulWidget {
   @override
@@ -11,6 +13,12 @@ class ConfirmPaymentPage extends StatefulWidget {
 }
 
 class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
+  var service = FetchInventoryService();
+  var controller;
+  _ConfirmPaymentPageState() {
+    controller = InventoryController(service);
+  }
+
   List<int> bgColor = [50, 100];
   List<int> remainingQuantity = [];
   @override
@@ -39,6 +47,11 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
     cart.cartItems.forEach((element) {
       totalQuantity = totalQuantity + element.qtyLotto;
     });
+
+    _confirmPurchase(String lottoNum, int qtyLotto) async {
+      await controller.confirmPurchase(lottoNum, qtyLotto);
+      context.read<Inventories>().cart = new Cart("user", []);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -114,7 +127,13 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
                             ],
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              cart.cartItems.forEach((element) async {
+                                _confirmPurchase(
+                                    element.lottoNum, element.qtyLotto);
+                                Navigator.pushNamed(context, '/');
+                              });
+                            },
                             child: Text("ยืนยัน"),
                           ),
                         ],

@@ -8,7 +8,10 @@ class CheckLottoService {
   Future<List<LottoPrize>> getPrizesByDate(String date) async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('million_lottoprize')
-        .where('date', isEqualTo: date)
+        .where(
+          'date',
+          isEqualTo: date,
+        )
         .get();
 
     AllLottoPrize allLottoPrize = AllLottoPrize.fromSnapshot(snapshot);
