@@ -23,8 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Background(
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: <Widget>[
               Expanded(
                 child: Container(

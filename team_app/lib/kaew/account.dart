@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:team_app/controllers/userController.dart';
 import 'package:team_app/ice/component/screen/login/login.dart';
 import 'package:team_app/main.dart';
+import 'package:team_app/models/bottomBarIndex.dart';
 import 'package:team_app/models/user_models.dart';
 import 'package:team_app/models/usernameForm.dart';
 import 'package:provider/provider.dart';
@@ -233,6 +234,8 @@ class _AccountState extends State<Account> {
                   )),
               ListTile(
                   onTap: () {
+                    context.read<UserSession>().email = "";
+                    context.read<BottomBarIndex>().bottomBarIndex = 0;
                     Navigator.popUntil(context, ModalRoute.withName('/login'));
                   },
                   tileColor: Colors.purple[50],

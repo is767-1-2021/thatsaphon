@@ -87,121 +87,125 @@ class _EditUserState extends State<EditUser> {
             ? Center(
                 child: Text("Error: Cannot find user."),
               )
-            : Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 120,
-                    width: 120,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        users[0].image == ""
-                            ? CircleAvatar(
-                                backgroundImage:
-                                    AssetImage('assets/Avartar.png'),
-                              )
-                            : CircleAvatar(
-                                backgroundImage:
-                                    AssetImage("assets/" + users[0].image),
-                              ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 40),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        editedFullName = value;
-                      },
-                      initialValue: users[0].fullName,
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: "Name",
-                        icon: Icon(Icons.person),
+            : ListView(
+                children: [
+                  Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 120,
+                        width: 120,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            users[0].image == ""
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage('assets/Avartar.png'),
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage("assets/" + users[0].image),
+                                  ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 40),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        editedUsername = value;
-                      },
-                      initialValue: users[0].username,
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: "Profile Name",
-                        icon: Icon(Icons.person_pin),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 40),
+                        child: TextFormField(
+                          onChanged: (value) {
+                            editedFullName = value;
+                          },
+                          initialValue: users[0].fullName,
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: "Name",
+                            icon: Icon(Icons.person),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 40),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        editedBirthDate = value;
-                      },
-                      initialValue: users[0].birthDate,
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: "BirthDate",
-                        icon: Icon(Icons.cake),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 40),
+                        child: TextFormField(
+                          onChanged: (value) {
+                            editedUsername = value;
+                          },
+                          initialValue: users[0].username,
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: "Profile Name",
+                            icon: Icon(Icons.person_pin),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 40),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        editedPhone = value;
-                      },
-                      initialValue: users[0].phone,
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: "Mobile Number",
-                        icon: Icon(Icons.phone),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 40),
+                        child: TextFormField(
+                          onChanged: (value) {
+                            editedBirthDate = value;
+                          },
+                          initialValue: users[0].birthDate,
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: "BirthDate",
+                            icon: Icon(Icons.cake),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 40),
-                    child: TextFormField(
-                      initialValue: users[0].email,
-                      decoration: InputDecoration(
-                        enabled: false,
-                        border: UnderlineInputBorder(),
-                        labelText: "Email",
-                        icon: Icon(Icons.email),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 40),
+                        child: TextFormField(
+                          onChanged: (value) {
+                            editedPhone = value;
+                          },
+                          initialValue: users[0].phone,
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: "Mobile Number",
+                            icon: Icon(Icons.phone),
+                          ),
+                        ),
                       ),
-                    ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 40),
+                        child: TextFormField(
+                          initialValue: users[0].email,
+                          decoration: InputDecoration(
+                            enabled: false,
+                            border: UnderlineInputBorder(),
+                            labelText: "Email",
+                            icon: Icon(Icons.email),
+                          ),
+                        ),
+                      ),
+                      // Container(
+                      //   alignment: Alignment.center,
+                      //   margin: EdgeInsets.symmetric(horizontal: 40),
+                      //   child: TextFormField(
+                      //     decoration: InputDecoration(
+                      //       border: UnderlineInputBorder(),
+                      //       labelText: "Password",
+                      //       icon: Icon(Icons.vpn_key),
+                      //     ),
+                      //   ),
+                      // ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 40),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            updateProfile();
+                            Navigator.pushNamed(context, '/acc');
+                          },
+                          child: Text("Save"),
+                        ),
+                      )
+                    ],
                   ),
-                  // Container(
-                  //   alignment: Alignment.center,
-                  //   margin: EdgeInsets.symmetric(horizontal: 40),
-                  //   child: TextFormField(
-                  //     decoration: InputDecoration(
-                  //       border: UnderlineInputBorder(),
-                  //       labelText: "Password",
-                  //       icon: Icon(Icons.vpn_key),
-                  //     ),
-                  //   ),
-                  // ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 40),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        updateProfile();
-                        Navigator.pushNamed(context, '/acc');
-                      },
-                      child: Text("Save"),
-                    ),
-                  )
                 ],
               ),
       ),

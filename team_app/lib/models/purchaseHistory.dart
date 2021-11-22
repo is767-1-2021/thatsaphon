@@ -42,12 +42,17 @@ class PurchaseHistory {
   }
 
   Map<String, dynamic> toJson() {
-    var month = getMonth(date);
-    var newDate =
-        date.substring(8, 10) + " " + month + " " + date.substring(0, 4);
+    var monthPurchased = getMonth(datePurchase);
+    var yearPurchased = int.parse(datePurchase.substring(0, 4)) + 543;
+
+    var newDatePurchased = datePurchase.substring(8, 10) +
+        " " +
+        monthPurchased +
+        " " +
+        yearPurchased.toString();
 
     return {
-      'datePurchase': newDate,
+      'datePurchase': newDatePurchased,
       'lotNumPurchase': lotNumPurchase,
       'pricePurchase': pricePurchase,
       'qtyPurchase': qtyPurchase,
