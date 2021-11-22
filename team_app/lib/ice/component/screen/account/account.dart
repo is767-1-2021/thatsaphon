@@ -46,7 +46,7 @@ class _EditUserState extends State<EditUser> {
       "",
       "",
       "",
-      "",
+      "alif.jpg",
     );
   }
 
@@ -59,6 +59,7 @@ class _EditUserState extends State<EditUser> {
       editedUsername,
       editedImage,
     );
+    await controller.fectname(context.read<UserSession>().email);
   }
 
   void _getUsers() async {
