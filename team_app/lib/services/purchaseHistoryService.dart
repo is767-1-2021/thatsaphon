@@ -10,10 +10,9 @@ class PurchaseHistoryService {
           toFirestore: (purchaseHistory, _) => purchaseHistory.toJson());
 
   addInventory(String date, String lotNumPurchase, int pricePurchase,
-      int qtyPurchase, String username) async {
+      int qtyPurchase, String email) async {
     await invenRef.add(
-      PurchaseHistory(
-          date, lotNumPurchase, pricePurchase, qtyPurchase, username),
+      PurchaseHistory(date, lotNumPurchase, pricePurchase, qtyPurchase, email),
     );
   }
 }

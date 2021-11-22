@@ -31,6 +31,6 @@ class InventoryController {
     String now = DateTime.now().toLocal().toString();
     await service.updateInventory(lottoNum, qty);
     await purchaseHistoryService.addInventory(
-        now, lottoNum, qty * 80, qty, "username");
+        now, lottoNum, qty * 80, qty, "abc@gmail.com");
   }
 }

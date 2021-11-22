@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:team_app/ice/component/background.dart';
 import 'package:team_app/ice/component/screen/register/register.dart';
-// import 'package:team_apps/components/background.dart';
-// import 'package:team_apps/components/screens/register/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:email_validator/email_validator.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  String? _email;
+  String? _password;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -43,6 +50,9 @@ class LoginScreen extends StatelessWidget {
                       return 'โปรดใส่ Username';
                     }
                   },
+                  onSaved: (value) {
+                    _email = value!;
+                  },
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: "Username",
@@ -59,6 +69,9 @@ class LoginScreen extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return 'โปรดใส่ Password';
                     }
+                  },
+                  onSaved: (value) {
+                    _password = value!;
                   },
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
@@ -84,10 +97,35 @@ class LoginScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
                 child: RaisedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      Navigator.pushNamed(context, '/');
+                      if (!EmailValidator.validate(_email!)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please Input your Email'),
+                          ),
+                        );
+                      }
+                      try {
+                        await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: _email!, password: _password!)
+                            .then((value) {
+                          _formKey.currentState!.reset();
+                          Navigator.pushNamed(context, '/');
+                        });
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('ไม่มีจ้า'),
+                          ));
+                        } else if (e.code == 'wrong-password') {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('email and password incorrect'),
+                          ));
+                        }
+                      }
                     }
                   },
                   shape: RoundedRectangleBorder(

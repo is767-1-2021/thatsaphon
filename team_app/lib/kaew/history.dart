@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
-
-import '../main.dart';
-
-final _item = <Item>[
-  Item(headerValue: 'งวดวันที่ 16 กันยายน 2564', expandedValue: [
-    Item2(lotto: '145621', number: '1ใบ'),
-    Item2(lotto: '118468', number: '2ใบ'),
-    Item2(lotto: '205716', number: '2ใบ'),
-    Item2(lotto: '157312', number: '5ใบ')
-  ]),
-  Item(headerValue: 'งวดวันที่ 1 กันยายน 2564', expandedValue: [
-    Item2(lotto: '651950', number: '1ใบ'),
-    Item2(lotto: '541327', number: '4ใบ')
-  ]),
-];
+import 'package:team_app/controllers/checkLottoController.dart';
+import 'package:team_app/kaew/controllers/prize_con.dart';
+import 'package:team_app/kaew/controllers/purchase_con.dart';
+import 'package:team_app/kaew/model/prize_model.dart';
+import 'package:team_app/kaew/model/purchase_model.dart';
+import 'package:team_app/kaew/services/prize_ser.dart';
+import 'package:team_app/kaew/services/purchase_ser.dart';
 
 class History extends StatefulWidget {
   @override
@@ -21,217 +13,279 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
-  Widget _buildListPanel() {
-    return ExpansionPanelList.radio(
-      children: _item
-          .map((tile) => ExpansionPanelRadio(
-                value: tile.headerValue,
-                canTapOnHeader: true,
-                headerBuilder: (context, isExpanded) => buildTile(tile),
-                backgroundColor: Colors.deepPurple[100],
-                body: Column(
-                  children: tile.expandedValue.map(buildTile2).toList(),
-                ),
-              ))
-          .toList(),
-    );
+  PurHistoryServices? services;
+  PurHistoryController? controller;
+  List<LottoCheck> prizes = [];
+  String _dialog = "";
+
+  List<PurHistory> purhistory = List.empty();
+  // LottoCheckService? services2;
+  // LottoCheckController? controller2;
+  List<LottoCheck> lottocheck = List.empty();
+  bool isLoading = false;
+  var controller2 = CheckLottoController();
+
+  void initState() {
+    super.initState();
+    services = PurHistoryServices();
+    controller = PurHistoryController(services!);
+
+    getlotto();
+    controller!.onSync
+        .listen((bool synState) => setState(() => isLoading = synState));
   }
 
-  Widget buildTile(Item tile) => ListTile(
-        leading: Icon(Icons.local_attraction_sharp),
-        tileColor: Colors.deepPurple[100],
-        title: Text(
-          tile.headerValue,
-          style: TextStyle(fontSize: 20.0),
-        ),
-      );
+  void _getPrizes() async {
+    var newPrizes = await controller2.fetchPrizes("1 พฤศจิกายน 2564");
+  }
 
-  Widget buildTile2(Item2 tile2) => ListTile(
-      leading: Icon(Icons.local_attraction_sharp),
-      title: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Text(
-          tile2.lotto,
-          style: TextStyle(fontSize: 18.0),
-        ),
-        Text(
-          tile2.number,
-          style: TextStyle(fontSize: 18.0),
-        )
-      ]),
-      tileColor: Colors.purple[50],
-      trailing: IconButton(
-          icon: Icon(
-            Icons.check_box_outlined,
-            color: Colors.purple,
-          ),
-          onPressed: () {
-            if (tile2.lotto == '145621') {
-              showDialog(
-                context: context,
-                builder: (BuildContext Context) {
-                  return AlertDialog(
-                    title: Text(
-                      'ผลการตรวจรางวัล',
-                      style: TextStyle(fontSize: 25.0),
-                    ),
-                    content: Container(
-                      child: Text(
-                        'ยินดีด้วย คุณถูกรางวัลที่1!!',
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                    actions: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop();
-                          },
-                          icon: Icon(Icons.clear_outlined))
-                    ],
-                  );
-                },
-              );
-            } else if (tile2.lotto.substring(0, 3) == '118' ||
-                tile2.lotto.substring(0, 3) == '309') {
-              showDialog(
-                context: context,
-                builder: (BuildContext Context) {
-                  return AlertDialog(
-                    title: Text(
-                      'ผลการตรวจรางวัล',
-                      style: TextStyle(fontSize: 25.0),
-                    ),
-                    content: Container(
-                      child: Text(
-                        'ยินดีด้วย คุณถูกเลขหน้า3ตัว!',
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                    actions: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop();
-                          },
-                          icon: Icon(Icons.clear_outlined))
-                    ],
-                  );
-                },
-              );
-            } else if (tile2.lotto.substring(3, 6) == '143' ||
-                tile2.lotto.substring(3, 6) == '716') {
-              showDialog(
-                context: context,
-                builder: (BuildContext Context) {
-                  return AlertDialog(
-                    title: Text(
-                      'ผลการตรวจรางวัล',
-                      style: TextStyle(fontSize: 25.0),
-                    ),
-                    content: Container(
-                      child: Text(
-                        'ยินดีด้วย คุณถูกเลขท้าย3ตัว!!',
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                    actions: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop();
-                          },
-                          icon: Icon(Icons.clear_outlined))
-                    ],
-                  );
-                },
-              );
-            } else if (tile2.lotto.substring(4, 6) == '12') {
-              showDialog(
-                context: context,
-                builder: (BuildContext Context) {
-                  return AlertDialog(
-                    title: Text(
-                      'ผลการตรวจรางวัล',
-                      style: TextStyle(fontSize: 25.0),
-                    ),
-                    content: Container(
-                      child: Text(
-                        'ยินดีด้วย คุณถูกเลขท้าย2ตัว!!',
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                    actions: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop();
-                          },
-                          icon: Icon(Icons.clear_outlined))
-                    ],
-                  );
-                },
-              );
-            } else {
-              showDialog(
-                context: context,
-                builder: (BuildContext Context) {
-                  return AlertDialog(
-                    title: Text(
-                      'ผลการตรวจรางวัล',
-                      style: TextStyle(fontSize: 25.0),
-                    ),
-                    content: Container(
-                      child: Text(
-                        'เสียใจด้วยจ้า',
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                    actions: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop();
-                          },
-                          icon: Icon(Icons.clear_outlined))
-                    ],
-                  );
-                },
-              );
-            }
-          }));
+  void getlotto() async {
+    var newpurhistory = await controller!.Fectlotto();
+
+    setState(() {
+      purhistory = newpurhistory;
+    });
+  }
+
+  // void getLottoCheck() async {
+  //   var newlottocheck = await controller2!.fectLottoCheck();
+  //   setState(() {
+  //     lottocheck = newlottocheck;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'ประวัติการซื้อ',
-          style: TextStyle(fontSize: 28.0),
-        ),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.history)),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: _buildListPanel(),
-        ),
-      ),
-      bottomNavigationBar: BottomBar(),
-    );
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+                strokeWidth: 5.0, color: Colors.purple[200]),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'ประวัติการซื้อ',
+                style: TextStyle(fontSize: 28.0),
+              ),
+              actions: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.history)),
+              ],
+            ),
+            body: ListView.builder(
+                itemCount: purhistory.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                      leading: Icon(Icons.local_attraction_sharp),
+                      title: Text(purhistory[index].lotNumPurchase),
+                      tileColor: Colors.deepPurple[200 % 2],
+                      subtitle: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(purhistory[index].datePurchase),
+                          Text(purhistory[index].qtyPurchase.toString() + "ใบ"),
+                          Text(purhistory[index].pricePurchase.toString() +
+                              "บาท"),
+                        ],
+                      ),
+                      trailing: IconButton(
+                          icon: Icon(
+                            Icons.check_box_outlined,
+                            color: Colors.purple,
+                          ),
+                          onPressed: () {
+                            _dialog = "คุณไม่ถูกรางวัล";
+                            prizes.forEach((prize) {
+                              if (purhistory.length != 6) {
+                                _dialog = "โปรดใส่เลขให้ครบ 6 หลัก";
+                                return;
+                              }
+                              if (prize.prize == "รางวัลที่ 1" &&
+                                  purhistory[index].lotNumPurchase ==
+                                      prize.lottoNum) {
+                                _dialog = "ยินดีด้วยคุณถูกรางวัลที่ 1";
+                                return;
+                              }
+
+                              if (prize.prize == "รางวัลที่ 2" &&
+                                  purhistory[index].lotNumPurchase ==
+                                      prize.lottoNum) {
+                                _dialog = "\nยินดีด้วยคุณถูกรางวัลที่ 2";
+                                return;
+                              }
+                              if (prize.prize == "รางวัลที่ 3" &&
+                                  purhistory[index].lotNumPurchase ==
+                                      prize.lottoNum) {
+                                _dialog = "ยินดีด้วยคุณถูกรางวัลที่ 3";
+                                return;
+                              }
+                              if (prize.prize == "รางวัลเลขท้าย 2 ตัว" &&
+                                  purhistory[index]
+                                          .lotNumPurchase
+                                          .substring(4, 6) ==
+                                      prize.lottoNum) {
+                                _dialog = "\nยินดีด้วยคุณถูกเลขท้าย 2 ตัว";
+                                return;
+                              }
+                              if (prize.prize == "รางวัลเลขท้าย 3 ตัว" &&
+                                  purhistory[index]
+                                          .lotNumPurchase
+                                          .substring(0, 3) ==
+                                      prize.lottoNum) {
+                                _dialog = "ยินดีด้วยคุณถูกเลขท้าย 3 ตัว";
+                                return;
+                              }
+                              if (prize.prize == "รางวัลเลขหน้า 3 ตัว" &&
+                                  purhistory[index]
+                                          .lotNumPurchase
+                                          .substring(0, 3) ==
+                                      prize.lottoNum) {
+                                _dialog = "ยินดีด้วยคุณถูกเลขหน้า 3 ตัว";
+                                return;
+                              }
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext Context) {
+                                return AlertDialog(
+                                  title: Text('ผลการตรวจรางวัล'),
+                                  content: Container(
+                                    child: Text(_dialog),
+                                  ),
+                                  actions: [
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                        },
+                                        icon: Icon(Icons.clear_outlined))
+                                  ],
+                                );
+                              },
+                            );
+
+                            // if (purhistory[index].lotNumPurchase ==
+                            //     lottocheck[index].lottoNum) {
+                            //   showDialog(
+                            //     context: context,
+                            //     builder: (BuildContext Context) {
+                            //       return AlertDialog(
+                            //         title: Text('ผลการตรวจรางวัล'),
+                            //         content: Container(
+                            //           child:
+                            //               Text('ยินดีด้วย คุณถูกรางวัลที่1!!'),
+                            //         ),
+                            //         actions: [
+                            //           IconButton(
+                            //               onPressed: () {
+                            //                 Navigator.of(context,
+                            //                         rootNavigator: true)
+                            //                     .pop();
+                            //               },
+                            //               icon: Icon(Icons.clear_outlined))
+                            //         ],
+                            //       );
+                            //     },
+                            //   );
+                            // } else if (purhistory[index]
+                            //         .lotNumPurchase
+                            //         .substring(0, 3) ==
+                            //     lottocheck[4].lottoNum) {
+                            //   showDialog(
+                            //     context: context,
+                            //     builder: (BuildContext Context) {
+                            //       return AlertDialog(
+                            //         title: Text('ผลการตรวจรางวัล'),
+                            //         content: Container(
+                            //           child:
+                            //               Text('ยินดีด้วย คุณถูกเลขหน้า3ตัว!'),
+                            //         ),
+                            //         actions: [
+                            //           IconButton(
+                            //               onPressed: () {
+                            //                 Navigator.of(context,
+                            //                         rootNavigator: true)
+                            //                     .pop();
+                            //               },
+                            //               icon: Icon(Icons.clear_outlined))
+                            //         ],
+                            //       );
+                            //     },
+                            //   );
+                            // } else if (purhistory[index]
+                            //         .lotNumPurchase
+                            //         .substring(3, 6) ==
+                            //     lottocheck[4].lottoNum) {
+                            //   showDialog(
+                            //     context: context,
+                            //     builder: (BuildContext Context) {
+                            //       return AlertDialog(
+                            //         title: Text('ผลการตรวจรางวัล'),
+                            //         content: Container(
+                            //           child:
+                            //               Text('ยินดีด้วย คุณถูกเลขท้าย3ตัว!!'),
+                            //         ),
+                            //         actions: [
+                            //           IconButton(
+                            //               onPressed: () {
+                            //                 Navigator.of(context,
+                            //                         rootNavigator: true)
+                            //                     .pop();
+                            //               },
+                            //               icon: Icon(Icons.clear_outlined))
+                            //         ],
+                            //       );
+                            //     },
+                            //   );
+                            // } else if (purhistory[index]
+                            //         .lotNumPurchase
+                            //         .substring(4, 6) ==
+                            //     lottocheck[4].lottoNum) {
+                            //   showDialog(
+                            //     context: context,
+                            //     builder: (BuildContext Context) {
+                            //       return AlertDialog(
+                            //         title: Text('ผลการตรวจรางวัล'),
+                            //         content: Container(
+                            //           child:
+                            //               Text('ยินดีด้วย คุณถูกเลขท้าย2ตัว!!'),
+                            //         ),
+                            //         actions: [
+                            //           IconButton(
+                            //               onPressed: () {
+                            //                 Navigator.of(context,
+                            //                         rootNavigator: true)
+                            //                     .pop();
+                            //               },
+                            //               icon: Icon(Icons.clear_outlined))
+                            //         ],
+                            //       );
+                            //     },
+                            //   );
+                            // } else {
+                            //   showDialog(
+                            //     context: context,
+                            //     builder: (BuildContext Context) {
+                            //       return AlertDialog(
+                            //         title: Text('ผลการตรวจรางวัล'),
+                            //         content: Container(
+                            //           child: Text('เสียใจด้วยจ้า'),
+                            //         ),
+                            //         actions: [
+                            //           IconButton(
+                            //               onPressed: () {
+                            //                 Navigator.of(context,
+                            //                         rootNavigator: true)
+                            //                     .pop();
+                            //               },
+                            //               icon: Icon(Icons.clear_outlined))
+                            //         ],
+                            //       );
+                            //     },
+                            //   );
+                            // }
+                          }));
+                }),
+          );
   }
-}
-
-class Item {
-  String headerValue;
-  List<Item2> expandedValue;
-  bool isExpanded;
-
-  Item(
-      {required this.headerValue,
-      this.expandedValue = const [],
-      this.isExpanded = false});
-}
-
-class Item2 {
-  String lotto;
-  String number;
-  bool isExpanded;
-
-  Item2({required this.lotto, required this.number, this.isExpanded = false});
 }

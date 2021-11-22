@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
         '/search': (context) => SearchLottoPage(),
         '/register': (context) => RegisterScreen(),
         '/login': (context) => LoginScreen(),
-        '/profile': (context) => ProfileScreen(),
+        '/profile': (context) => EditUser(),
         '/cart': (context) => CartPage(),
       },
     );

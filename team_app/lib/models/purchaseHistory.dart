@@ -5,30 +5,51 @@ class PurchaseHistory {
   String lotNumPurchase = "";
   int pricePurchase = 0;
   int qtyPurchase = 0;
-  String username = "";
+  String email = "";
 
   PurchaseHistory(this.date, this.lotNumPurchase, this.pricePurchase,
-      this.qtyPurchase, this.username);
+      this.qtyPurchase, this.email);
 
   factory PurchaseHistory.fromJson(
     Map<String, dynamic> json,
   ) {
     return PurchaseHistory(
-      json['date'] as String,
+      json['datePurchase'] as String,
       json['lotNumPurchase'] as String,
       json['pricePurchase'] as int,
       json['qtyPurchase'] as int,
-      json['username'] as String,
+      json['email'] as String,
     );
   }
 
+  String getMonth(String date) {
+    var monthNumber = date.substring(5, 7);
+    if (monthNumber == "1") return "มกราคม";
+    if (monthNumber == "2") return "กุมภาพันธ์";
+    if (monthNumber == "3") return "มีนาคม";
+    if (monthNumber == "4") return "เมษายน";
+    if (monthNumber == "5") return "พฤษภาคม";
+    if (monthNumber == "6") return "มิถุนายน";
+    if (monthNumber == "7") return "กรกฎาคม";
+    if (monthNumber == "8") return "สิงหาคม";
+    if (monthNumber == "9") return "กันยายน";
+    if (monthNumber == "10") return "ตุลาคม";
+    if (monthNumber == "11") return "พฤศจิกายน";
+    if (monthNumber == "12") return "ธันวาคม";
+    return "";
+  }
+
   Map<String, dynamic> toJson() {
+    var month = getMonth(date);
+    var newDate =
+        date.substring(8, 10) + " " + month + " " + date.substring(0, 4);
+
     return {
-      'date': date,
+      'datePurchase': newDate,
       'lotNumPurchase': lotNumPurchase,
       'pricePurchase': pricePurchase,
       'qtyPurchase': qtyPurchase,
-      'username': username,
+      'email': email,
     };
   }
 
@@ -39,7 +60,7 @@ class PurchaseHistory {
         .toList();
 
     List<PurchaseHistory> newPurchase = purchaseHistories
-        .where((element) => element.username == username)
+        .where((element) => element.email == username)
         .toList();
 
     return newPurchase[0];

@@ -4,13 +4,13 @@ import 'package:team_app/models/prize.dart';
 import 'package:team_app/services/checkLottoService.dart';
 
 class CheckLottoController {
-  final CheckLottoService service;
+  CheckLottoService service = CheckLottoService();
   List<LottoPrize> prizes = [];
 
   StreamController<bool> onSyncController = StreamController();
   Stream<bool> get onSync => onSyncController.stream;
 
-  CheckLottoController(this.service);
+  CheckLottoController();
 
   Future<List<LottoPrize>> fetchPrizes(String date) async {
     onSyncController.add(true);

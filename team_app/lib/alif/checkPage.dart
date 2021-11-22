@@ -12,7 +12,7 @@ class CheckPage extends StatefulWidget {
   var service = CheckLottoService();
   var controller;
   CheckPage() {
-    controller = CheckLottoController(service);
+    controller = CheckLottoController();
   }
 
   @override
