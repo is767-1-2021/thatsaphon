@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class UsernameFormModel extends ChangeNotifier {
-  String _Username = 'AlifInwZa55+';
+class UserSession extends ChangeNotifier {
+  String email = '';
+  get getEmail => this.email;
 
-  get Username => this._Username;
+  set setEmail(email) => {this.email = email, notifyListeners()};
+  // get email => this.email;
 
-  set Username(value) {
-    this._Username = value;
-    notifyListeners();
-  }
+  // set Username(value) {
+  //   this._Username = value;
+  //   notifyListeners();
+  // }
+
 }

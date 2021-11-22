@@ -13,9 +13,9 @@ class AccnameController {
 
   AccnameController(this.service);
 
-  Future<List<Accname>> Fectname() async {
+  Future<List<Accname>> Fectname(String email) async {
     onSyncController.add(true); // stream connected
-    accname = await service.getname();
+    accname = await service.getname(email);
     onSyncController.add(false); // stop connected
     return accname;
   }

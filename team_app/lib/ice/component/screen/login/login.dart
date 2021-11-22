@@ -3,6 +3,8 @@ import 'package:team_app/ice/component/background.dart';
 import 'package:team_app/ice/component/screen/register/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:provider/provider.dart';
+import 'package:team_app/models/usernameForm.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -113,6 +115,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 email: _email!, password: _password!)
                             .then((value) {
                           _formKey.currentState!.reset();
+                          print(_email);
+                          context.read<UserSession>().email = _email!;
                           Navigator.pushNamed(context, '/');
                         });
                       } on FirebaseAuthException catch (e) {

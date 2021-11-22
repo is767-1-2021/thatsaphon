@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:team_app/controllers/inventoryController.dart';
+import 'package:team_app/controllers/notiController.dart';
 
 import 'package:team_app/main.dart';
 import 'package:team_app/models/inventories.dart';
+import 'package:team_app/models/usernameForm.dart';
 import 'package:team_app/services/inventoryService.dart';
+import 'package:team_app/services/notiService.dart';
 
 class ConfirmPaymentPage extends StatefulWidget {
   @override
@@ -14,9 +17,12 @@ class ConfirmPaymentPage extends StatefulWidget {
 
 class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
   var service = FetchInventoryService();
+  var service2 = NotisServices();
   var controller;
+  var controller2;
   _ConfirmPaymentPageState() {
     controller = InventoryController(service);
+    controller2 = NotisController(service2);
   }
 
   List<int> bgColor = [50, 100];
@@ -49,7 +55,16 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
     });
 
     _confirmPurchase(String lottoNum, int qtyLotto) async {
-      await controller.confirmPurchase(lottoNum, qtyLotto);
+      await controller2.addNotis(
+          context.read<UserSession>().email,
+          "ทำรายการสำเร็จ",
+          "คุณได้ซื้อล็อตเตอรี่เลข " +
+              lottoNum +
+              " จำนวน " +
+              qtyLotto.toString() +
+              " ใบ");
+      await controller.confirmPurchase(
+          lottoNum, qtyLotto, context.read<UserSession>().email);
       context.read<Inventories>().cart = new Cart("user", []);
     }
 

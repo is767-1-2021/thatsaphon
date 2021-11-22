@@ -3,7 +3,9 @@ import 'package:team_app/controllers/userController.dart';
 import 'package:team_app/ice/component/background.dart';
 import 'package:team_app/main.dart';
 import 'package:team_app/models/user_models.dart';
+import 'package:team_app/models/usernameForm.dart';
 import 'package:team_app/services/user_service.dart';
+import 'package:provider/provider.dart';
 
 class EditUser extends StatefulWidget {
   static String routeName = '/profile';
@@ -13,7 +15,7 @@ class EditUser extends StatefulWidget {
 }
 
 class _EditUserState extends State<EditUser> {
-  List<Accname> users = [];
+  List<Accname> users = [Accname('', '', '', '', '', '')];
   bool isLoading = false;
   var service = AccnameServices();
   var controller;
@@ -37,6 +39,17 @@ class _EditUserState extends State<EditUser> {
         .listen((bool synState) => setState(() => isLoading = synState));
   }
 
+  void addProfile() async {
+    await controller.addProfile(
+      "",
+      context.read<UserSession>().email,
+      "",
+      "",
+      "",
+      "",
+    );
+  }
+
   void updateProfile() async {
     await controller.updateProfile(
       editedBirthDate,
@@ -49,25 +62,28 @@ class _EditUserState extends State<EditUser> {
   }
 
   void _getUsers() async {
-    var newUsers = await controller.fectname();
-    setState(() {
-      users = newUsers;
-    });
+    var newUsers = await controller.fectname(context.read<UserSession>().email);
+    if (newUsers.length == 0) {
+      addProfile();
+    }
+    if (newUsers.length != 0) {
+      setState(() {
+        users = newUsers;
+      });
+    }
     editedBirthDate = newUsers[0].birthDate;
     editedEmail = newUsers[0].email;
     editedFullName = newUsers[0].fullName;
     editedPhone = newUsers[0].phone;
     editedUsername = newUsers[0].username;
     editedImage = newUsers[0].image;
-    print("users==================");
-    print(users);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Background(
-        child: users.length == 0
+        child: users[0].email == ''
             ? Center(
                 child: Text("Error: Cannot find user."),
               )
@@ -79,8 +95,11 @@ class _EditUserState extends State<EditUser> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        users.length == 0
-                            ? CircleAvatar()
+                        users[0].image == ""
+                            ? CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/Avartar.png'),
+                              )
                             : CircleAvatar(
                                 backgroundImage:
                                     AssetImage("assets/" + users[0].image),

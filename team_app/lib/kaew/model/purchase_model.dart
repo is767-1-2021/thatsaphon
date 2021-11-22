@@ -6,9 +6,10 @@ class PurHistory {
   final String email;
   final String lotNumPurchase;
   final String datePurchase;
+  final String date;
 
   PurHistory(this.qtyPurchase, this.pricePurchase, this.email,
-      this.lotNumPurchase, this.datePurchase);
+      this.lotNumPurchase, this.datePurchase, this.date);
 
   factory PurHistory.fromJson(
     Map<String, dynamic> json,
@@ -19,6 +20,7 @@ class PurHistory {
       json['email'] as String,
       json['lotNumPurchase'] as String,
       json['datePurchase'] as String,
+      json['date'] as String,
     );
   }
 }

@@ -136,7 +136,7 @@ class _SearchLottoPageState extends State<SearchLottoPage> {
               child: Row(
                 children: [
                   Text(
-                    "งวดวันที่ 16 กันยายน 2564",
+                    "งวดวันที่ 1 พฤศจิกายน 2564",
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],

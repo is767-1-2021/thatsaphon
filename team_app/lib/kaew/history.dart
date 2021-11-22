@@ -6,6 +6,9 @@ import 'package:team_app/kaew/model/prize_model.dart';
 import 'package:team_app/kaew/model/purchase_model.dart';
 import 'package:team_app/kaew/services/prize_ser.dart';
 import 'package:team_app/kaew/services/purchase_ser.dart';
+import 'package:team_app/models/prize.dart';
+import 'package:team_app/models/usernameForm.dart';
+import 'package:provider/provider.dart';
 
 class History extends StatefulWidget {
   @override
@@ -15,13 +18,13 @@ class History extends StatefulWidget {
 class _HistoryState extends State<History> {
   PurHistoryServices? services;
   PurHistoryController? controller;
-  List<LottoCheck> prizes = [];
+  List<LottoPrize> prizes = [];
   String _dialog = "";
 
   List<PurHistory> purhistory = List.empty();
   // LottoCheckService? services2;
   // LottoCheckController? controller2;
-  List<LottoCheck> lottocheck = List.empty();
+  List<LottoPrize> lottocheck = List.empty();
   bool isLoading = false;
   var controller2 = CheckLottoController();
 
@@ -31,16 +34,21 @@ class _HistoryState extends State<History> {
     controller = PurHistoryController(services!);
 
     getlotto();
+    _getPrizes();
     controller!.onSync
         .listen((bool synState) => setState(() => isLoading = synState));
   }
 
   void _getPrizes() async {
     var newPrizes = await controller2.fetchPrizes("1 พฤศจิกายน 2564");
+    setState(() {
+      prizes = newPrizes;
+    });
   }
 
   void getlotto() async {
-    var newpurhistory = await controller!.Fectlotto();
+    var newpurhistory =
+        await controller!.Fectlotto(context.read<UserSession>().email);
 
     setState(() {
       purhistory = newpurhistory;
@@ -77,7 +85,7 @@ class _HistoryState extends State<History> {
                   return ListTile(
                       leading: Icon(Icons.local_attraction_sharp),
                       title: Text(purhistory[index].lotNumPurchase),
-                      tileColor: Colors.deepPurple[200 % 2],
+                      tileColor: Colors.deepPurple[50],
                       subtitle: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -95,10 +103,11 @@ class _HistoryState extends State<History> {
                           onPressed: () {
                             _dialog = "คุณไม่ถูกรางวัล";
                             prizes.forEach((prize) {
-                              if (purhistory.length != 6) {
-                                _dialog = "โปรดใส่เลขให้ครบ 6 หลัก";
-                                return;
-                              }
+                              // if (purhistory.length != 6) {
+                              //   _dialog = "โปรดใส่เลขให้ครบ 6 หลัก";
+                              //   return;
+                              // }
+                              print(prize.prize);
                               if (prize.prize == "รางวัลที่ 1" &&
                                   purhistory[index].lotNumPurchase ==
                                       prize.lottoNum) {

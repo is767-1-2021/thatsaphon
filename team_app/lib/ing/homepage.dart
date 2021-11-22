@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:team_app/models/usernameForm.dart';
 
 import '../main.dart';
 
@@ -11,9 +13,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String randomNumber = '';
-
   @override
   Widget build(BuildContext context) {
+    String userSession = context.read<UserSession>().email;
+    print("userSession");
+    print(userSession);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -102,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/lotto-news');
+                  Navigator.pushNamed(context, '/news');
                 },
                 child: Container(
                   child: Text(

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:team_app/controllers/notiController.dart';
 import 'package:team_app/ing/noti.dart';
+import 'package:team_app/ing/notiListView.dart';
 import 'package:team_app/models/notiform.dart';
 import 'package:provider/provider.dart';
+import 'package:team_app/services/notiService.dart';
 
 class Notiinput extends StatelessWidget {
   @override
@@ -23,19 +26,33 @@ class InputForm extends StatefulWidget {
 
 class _InputFormState extends State<InputForm> {
   final _formKey = GlobalKey<FormState>();
-  String _alert = '';
+  String notificationTitle = '';
+  String notificationDetail = '';
+  String email = '';
+
+  var service = NotisServices();
+  var controller;
+
+  _InputFormState() {
+    controller = NotisController(service);
+  }
+
+  _addNotis(
+      String email, String notificationTitle, String notificationDetail) async {
+    await controller.addNotis(email, notificationTitle, notificationDetail);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           TextFormField(
             decoration: InputDecoration(
               border: UnderlineInputBorder(),
-              labelText: 'Input การแจ้งเตือน :',
+              labelText: 'เพิ่ม email ที่ต้องการส่งแจ้งเตือน :',
               icon: Icon(Icons.notification_add_outlined),
             ),
             validator: (value) {
@@ -45,35 +62,57 @@ class _InputFormState extends State<InputForm> {
               return null;
             },
             onSaved: (value) {
-              _alert = value!;
+              email = value!;
             },
-            // initialValue: context.read<NotiformModel>().alert
+            // initialValue: context.read<Notis>().alert
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              border: UnderlineInputBorder(),
+              labelText: 'เพิ่ม Notification Title :',
+              icon: Icon(Icons.notification_add_outlined),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'ยังไม่ได้อัพเดทการแจ้งเตือนใหม่';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              notificationTitle = value!;
+            },
+            // initialValue: context.read<Notis>().alert
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              border: UnderlineInputBorder(),
+              labelText: 'เพิ่ม Notifiaction Detail :',
+              icon: Icon(Icons.notification_add_outlined),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'ยังไม่ได้อัพเดทการแจ้งเตือนใหม่';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              notificationDetail = value!;
+            },
+            // initialValue: context.read<Notis>().alert
           ),
 
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                if (context.read<NotiformModel>().alert == null) {
-                  //ถ้ากล่องยังไม่ได้สร้าง (เป็นค่าว่าง) ก้สร้างกล่อง [] (V)
-                  var temp = <String>[];
-                  //สร้างตัวแปรเพื่อเก็บกล่องเปล่า
-                  temp.add(_alert);
-                  context.read<NotiformModel>().alert = temp;
-
-                  return;
-                }
-                if (context.read<NotiformModel>().alert != null) {
-                  var temp = new List<String>.from(
-                      context.read<NotiformModel>().alert);
-                  temp.add(_alert);
-                  context.read<NotiformModel>().alert = temp;
-                }
-
-                //click แล้วใส่ string เข้าไป
-
-                // context.read<NotiformModel>().alert = _alert;
               }
+              _addNotis(email, notificationTitle, notificationDetail);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Listviewtest(),
+                ),
+              );
             },
             child: Text('อัพโหลดข้อมูล'),
           ),
@@ -87,7 +126,7 @@ class _InputFormState extends State<InputForm> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Notifications(),
+                  builder: (context) => Listviewtest(),
                 ),
               );
             },

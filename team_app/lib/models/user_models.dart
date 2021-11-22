@@ -17,12 +17,12 @@ class Accname {
   }
   Map<String, dynamic> toJson() {
     return {
-      birthDate: birthDate,
-      email: email,
-      fullName: fullName,
-      phone: phone,
-      username: username,
-      image: image,
+      'birthDate': birthDate,
+      'email': email,
+      'fullName': fullName,
+      'phone': phone,
+      'username': username,
+      'image': image,
     };
   }
 

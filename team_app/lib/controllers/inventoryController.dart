@@ -27,10 +27,10 @@ class InventoryController {
     await service.addInventory(lottoNum, qty);
   }
 
-  void confirmPurchase(String lottoNum, int qty) async {
+  void confirmPurchase(String lottoNum, int qty, String email) async {
     String now = DateTime.now().toLocal().toString();
     await service.updateInventory(lottoNum, qty);
     await purchaseHistoryService.addInventory(
-        now, lottoNum, qty * 80, qty, "abc@gmail.com");
+        now, lottoNum, qty * 80, qty, email);
   }
 }

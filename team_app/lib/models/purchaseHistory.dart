@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PurchaseHistory {
-  String date = "";
+  String datePurchase = "";
   String lotNumPurchase = "";
   int pricePurchase = 0;
   int qtyPurchase = 0;
   String email = "";
+  String date = "";
 
-  PurchaseHistory(this.date, this.lotNumPurchase, this.pricePurchase,
-      this.qtyPurchase, this.email);
+  PurchaseHistory(this.datePurchase, this.lotNumPurchase, this.pricePurchase,
+      this.qtyPurchase, this.email, this.date);
 
   factory PurchaseHistory.fromJson(
     Map<String, dynamic> json,
@@ -19,6 +20,7 @@ class PurchaseHistory {
       json['pricePurchase'] as int,
       json['qtyPurchase'] as int,
       json['email'] as String,
+      json['date'] as String,
     );
   }
 
@@ -50,6 +52,7 @@ class PurchaseHistory {
       'pricePurchase': pricePurchase,
       'qtyPurchase': qtyPurchase,
       'email': email,
+      'date': "1 พฤศจิกายน 2564"
     };
   }
 

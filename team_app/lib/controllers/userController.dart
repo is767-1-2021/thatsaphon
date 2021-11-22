@@ -14,11 +14,29 @@ class AccnameController {
       StreamController(); // checking status stream onsync (on process / finish)
   Stream<bool> get onSync => onSyncController.stream;
 
-  Future<List<Accname>> fectname() async {
+  Future<List<Accname>> fectname(String email) async {
     onSyncController.add(true); // stream connected
-    accname = await service.getname();
+    accname = await service.getname(email);
     onSyncController.add(false); // stop connected
     return accname;
+  }
+
+  addProfile(
+    String birthDate,
+    String email,
+    String fullName,
+    String phone,
+    String username,
+    String image,
+  ) async {
+    await service.addProfile(
+      birthDate,
+      email,
+      fullName,
+      phone,
+      username,
+      image,
+    );
   }
 
   updateProfile(

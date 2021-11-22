@@ -35,13 +35,10 @@ void main() async {
           create: (context) => Inventories([]),
         ),
         ChangeNotifierProvider(
-          create: (context) => NotiformModel(),
-        ),
-        ChangeNotifierProvider(
           create: (context) => FirstFormModel(),
         ),
         ChangeNotifierProvider(
-          create: (context) => UsernameFormModel(),
+          create: (context) => UserSession(),
         ),
         ChangeNotifierProvider(
           create: (context) => BottomBarIndex(),

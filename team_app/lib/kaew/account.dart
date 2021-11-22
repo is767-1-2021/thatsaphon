@@ -19,7 +19,7 @@ class _AccountState extends State<Account> {
   final _formKey = GlobalKey<FormState>();
   AccnameServices? services;
   AccnameController? controller;
-  List<Accname> accname = List.empty();
+  List<Accname> accname = [Accname('', '', '', '', '', '')];
   bool isLoading = false;
   String? username;
 
@@ -31,9 +31,8 @@ class _AccountState extends State<Account> {
   }
 
   void getname() async {
-    var newaccname = await controller!.fectname();
-    print(newaccname);
-    print('newaccname===============================================');
+    var newaccname =
+        await controller!.fectname(context.read<UserSession>().email);
 
     setState(() {
       accname = newaccname;
@@ -64,8 +63,8 @@ class _AccountState extends State<Account> {
             child: Row(children: [
               ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(1000.0)),
-                  child: accname.length == 0
-                      ? Image.asset("")
+                  child: accname[0].image == ''
+                      ? Image.asset("assets/Avartar.png")
                       : Image.asset('assets/' + accname[0].image)),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Container(
@@ -134,8 +133,9 @@ class _AccountState extends State<Account> {
                                               }
                                               million_user_profile
                                                   .where('email',
-                                                      isEqualTo:
-                                                          'abc@gmail.com')
+                                                      isEqualTo: context
+                                                          .read<UserSession>()
+                                                          .email)
                                                   .get()
                                                   .then((QuerySnapshot
                                                       querySnapshot) {

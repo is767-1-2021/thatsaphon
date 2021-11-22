@@ -13,9 +13,9 @@ class PurHistoryController {
 
   PurHistoryController(this.service);
 
-  Future<List<PurHistory>> Fectlotto() async {
+  Future<List<PurHistory>> Fectlotto(String email) async {
     onSyncController.add(true); // stream connected
-    purhistory = await service.getlotto();
+    purhistory = await service.getlotto(email);
     onSyncController.add(false); // stop connected
     return purhistory;
   }

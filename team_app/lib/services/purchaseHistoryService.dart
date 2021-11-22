@@ -12,7 +12,8 @@ class PurchaseHistoryService {
   addInventory(String date, String lotNumPurchase, int pricePurchase,
       int qtyPurchase, String email) async {
     await invenRef.add(
-      PurchaseHistory(date, lotNumPurchase, pricePurchase, qtyPurchase, email),
+      PurchaseHistory(date, lotNumPurchase, pricePurchase, qtyPurchase, email,
+          "1 พฤศจิกายน 2564"),
     );
   }
 }
