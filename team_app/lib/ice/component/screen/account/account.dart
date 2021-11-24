@@ -49,6 +49,21 @@ class _EditUserState extends State<EditUser> {
       "",
       "alif.jpg",
     );
+    var newUsers = await controller.fectname(context.read<UserSession>().email);
+    if (newUsers.length == 0) {
+      addProfile();
+    }
+    if (newUsers.length != 0) {
+      setState(() {
+        users = newUsers;
+      });
+    }
+    editedBirthDate = newUsers[0].birthDate;
+    editedEmail = newUsers[0].email;
+    editedFullName = newUsers[0].fullName;
+    editedPhone = newUsers[0].phone;
+    editedUsername = newUsers[0].username;
+    editedImage = newUsers[0].image;
   }
 
   void updateProfile() async {
