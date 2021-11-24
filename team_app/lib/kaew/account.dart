@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:team_app/controllers/userController.dart';
+import 'package:team_app/ice/component/screen/account/account.dart';
 import 'package:team_app/ice/component/screen/login/login.dart';
 import 'package:team_app/main.dart';
 import 'package:team_app/models/bottomBarIndex.dart';
@@ -41,6 +42,7 @@ class _AccountState extends State<Account> {
       setState(() {
         accname = newaccname;
       });
+      print(accname[0].username);
     }
   }
 

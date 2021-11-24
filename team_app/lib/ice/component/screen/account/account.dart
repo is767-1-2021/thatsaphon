@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:team_app/controllers/userController.dart';
 import 'package:team_app/ice/component/background.dart';
+import 'package:team_app/kaew/account.dart';
 import 'package:team_app/main.dart';
 import 'package:team_app/models/user_models.dart';
 import 'package:team_app/models/usernameForm.dart';
@@ -35,8 +36,8 @@ class _EditUserState extends State<EditUser> {
     super.initState();
 
     _getUsers();
-    controller.onSync
-        .listen((bool synState) => setState(() => isLoading = synState));
+    // controller.onSync
+    //     .listen((bool synState) => setState(() => isLoading = synState));
   }
 
   void addProfile() async {
@@ -59,7 +60,7 @@ class _EditUserState extends State<EditUser> {
       editedUsername,
       editedImage,
     );
-    await controller.fectname(context.read<UserSession>().email);
+    await Navigator.pushNamed(context, '/acc');
   }
 
   void _getUsers() async {
@@ -183,24 +184,12 @@ class _EditUserState extends State<EditUser> {
                           ),
                         ),
                       ),
-                      // Container(
-                      //   alignment: Alignment.center,
-                      //   margin: EdgeInsets.symmetric(horizontal: 40),
-                      //   child: TextFormField(
-                      //     decoration: InputDecoration(
-                      //       border: UnderlineInputBorder(),
-                      //       labelText: "Password",
-                      //       icon: Icon(Icons.vpn_key),
-                      //     ),
-                      //   ),
-                      // ),
                       Container(
                         alignment: Alignment.center,
                         margin: EdgeInsets.symmetric(horizontal: 40),
                         child: ElevatedButton(
                           onPressed: () {
                             updateProfile();
-                            Navigator.pushNamed(context, '/acc');
                           },
                           child: Text("Save"),
                         ),
