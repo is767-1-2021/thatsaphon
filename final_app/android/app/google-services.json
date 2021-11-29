@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "398969249348",
+    "project_id": "is767-2021-thatsaphon",
+    "storage_bucket": "is767-2021-thatsaphon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398969249348:android:efee024037f8acabab6611",
+        "android_client_info": {
+          "package_name": "com.example.final_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398969249348-69ji2i5rjlmj2i0u54rpa7nkitu9kumm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-yNh7iZT5wLH23eceJAxaLxG_NAg4tJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398969249348-69ji2i5rjlmj2i0u54rpa7nkitu9kumm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
